@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'user_auth',
+
 ]
 
 MIDDLEWARE = [
@@ -51,10 +53,20 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'sportshub.urls'
 
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'swathisindhu09@gmail.com'
+EMAIL_HOST_PASSWORD = 'Srinivasam123@'
+EMAIL_USE_TLS = True
+
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

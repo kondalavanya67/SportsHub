@@ -1,0 +1,29 @@
+
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block login %}
+<link rel="stylesheet">
+
+
+<body>
+
+<h3 >Sign In</h3>
+
+<form method='POST' >
+{%csrf_token %}
+
+  {{ form }}
+
+  <button type='submit' >Submit</button>
+
+
+</form>
+
+<a href='{%url "user_register" %}'>Dont have a account?create one!</a>
+
+</body>
+<br><br><br><br><br><br><br><br><br><br>
+
+{% endblock %}
