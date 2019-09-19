@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block verify %}
+
+
+<body>
+    <h4 >OTP VERIFICATION</h4>
+ <form action="{% url 'new_user_reg' %}" method="post">
+ 	{% csrf_token %}
+	Please check your email!
+ 	<input type="hidden" name="username" id="username" value="{{ username }}"><br>
+ 	You will receive a email with otp.
+ 	<input type="hidden" name="email" id="email" value="{{ email }}"><br>
+ 	Please type the same otp in the given box.<br>
+ 	<input type="hidden" name="password" id="password" value="{{ password }}"><br>
+
+ 	<input type="text" name="token" id="token" ><br>
+ 	<button type='submit' class="btn btn-dark btn-block text-uppercase">submit otp</button>
+ </form>
+
+</body>
+ <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+{% endblock %}
