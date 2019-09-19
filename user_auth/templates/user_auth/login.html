@@ -1,5 +1,4 @@
-
-{% extends 'base.html' %}
+{% extends 'user_auth/base.html' %}
 
 {% load static %}
 
@@ -21,7 +20,8 @@
 
 </form>
 
-<a href='{%url "user_register" %}'>Dont have a account?create one!</a>
+<a href='{%url "user_auth:register_user" %}'>Dont have a account?create one!</a>
+<a href='{%url "forgot_pass" %}'>Forgot Password?</a>
 
 </body>
 <br><br><br><br><br><br><br><br><br><br>
