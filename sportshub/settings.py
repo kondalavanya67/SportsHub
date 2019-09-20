@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'user_auth',
     'bootstrapform',
     'widget_tweaks',
-
+    'news'
 ]
 
 MIDDLEWARE = [
