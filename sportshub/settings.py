@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'user_auth',
     'bootstrapform',
     'widget_tweaks',
-
+    'news'
 ]
 
 MIDDLEWARE = [
@@ -86,7 +86,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'sportshub',
         'USER': 'root',
-        'PASSWORD': 'jitesh123',
+        'PASSWORD': 'mysqlroot',
         'HOST': 'localhost',
         'PORT': '',
     }
