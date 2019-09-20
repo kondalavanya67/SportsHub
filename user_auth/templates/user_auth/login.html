@@ -1,29 +1,147 @@
-{% extends 'user_auth/base.html' %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>sports hub</title>
+      <style>
+          body{
+	margin:0;
+	color:#6a6f8c;
+	background:#c8c8c8;
+	font:600 16px/18px 'Open Sans',sans-serif;
+}
+*,:after,:before{box-sizing:border-box}
+.clearfix:after,.clearfix:before{content:'';display:table}
+.clearfix:after{clear:both;display:block}
+a{color:inherit;text-decoration:none}
+input[type="text"] {
+    width:100%;
+	color:#fff;
+	display:block;
+    border:none;
+    padding:15px 20px;
+    border-radius:25px;
+    background:rgba(255,255,255,.1);
+
+    }
+input[type="password"]{
+    width:100%;
+	color:#fff;
+	display:block;
+    border:none;
+    padding:15px 20px;
+    border-radius:25px;
+    background:rgba(255,255,255,.1);
+    text-security:circle;
+	-webkit-text-security:circle;
+
+}
+
+button{
+
+    text-transform:uppercase;
+    width:100%;
+	color:#fff;
+	display:block;
+    border:none;
+	padding:15px 20px;
+	border-radius:25px;
+	background:rgba(255,255,255,.1);
+    background:#1161ee;
+}
+.login-wrap {
+    width: 100%;
+    margin: auto;
+    max-width: 525px;
+    min-height: 670px;
+    position: relative;
+    background: url(https://previews.123rf.com/images/andreypopov/andreypopov1802/andreypopov180200884/96181198-high-angle-view-of-various-sport-equipments-on-green-grass.jpg) no-repeat center;
+    box-shadow: 0 12px 15px 0 rgba(0, 0, 0, .24), 0 17px 50px 0 rgba(0, 0, 0, .19);
+}
+.login-html{
+	width:100%;
+	height:100%;
+	position:absolute;
+	padding:90px 70px 50px 70px;
+	background:rgba(40,57,101,.9);
+}
+
+.login-html .sign-in {
+	display:none;
+}
+.login-html .tab{
+	text-transform:uppercase;
+}
+.login-html .tab{
+	font-size:30px;
+	margin-right:15px;
+	padding-bottom:5px;
+	margin:0 15px 10px 0;
+	display:inline-block;
+	border-bottom:2px solid transparent;
+}
+.login-html .sign-in:checked + .tab,
+.login-html .sign-up:checked + .tab{
+	color:#fff;
+	border-color:#1161ee;
+}
+
+
+
+.login-form .group input[data-type="password"]{
+	text-security:circle;
+	-webkit-text-security:circle;
+}
+
+
+
+.login-form .group .check:checked + label{
+	color:#fff;
+}
+
+
+          </style>
+  </head>
+  <body>
+
+
 
 {% load static %}
 
-{% block login %}
+
 <link rel="stylesheet">
 
 
-<body>
 
-<h3 >Sign In</h3>
+
+<br><br>
+<div class="login-wrap" >
+	<div class="login-html">
+
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input id="tab-1" type="radio" name="tab" class="sign-in" checked ><label for="tab-1" class="tab">Sign In</label><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <img width="180px" height="180px"  src="https://i.pinimg.com/originals/47/1a/1a/471a1ad342659289433e05a611d206f8.png"></img><br><br>
+
 
 <form method='POST' >
+
+
 {%csrf_token %}
 
   {{ form }}
-
-  <button type='submit' >Submit</button>
-
-
-</form>
-
-<a href='{%url "user_auth:register_user" %}'>Dont have a account?create one!</a>
+<br><br>
+  <button type='submit' class="button" align="right">Submit</button><br><br>
+<a href='{%url "user_auth:register_user" %}'>Dont have a account?create one!</a><br>
 <a href='{%url "forgot_pass" %}'>Forgot Password?</a>
+</form>
+    </div>
+</div>
 
-</body>
+
+
 <br><br><br><br><br><br><br><br><br><br>
 
-{% endblock %}
+
+
+</body>
+
+</html>
