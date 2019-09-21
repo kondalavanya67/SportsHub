@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>news</title>
+</head>
+<body>
+{% if news_list %}
+    {% for news_l in news_list %}
+        Tilte:<a href={{ news_l.url }}>{{ news_l.title }}<br></a>
+        {{ news_l.site }} : {{ news_l.time }}<br>
+        <img src={{ news_l.image_url }}><br>
+    {% endfor %}
+{% endif %}
+</body>
+</html>
