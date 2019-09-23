@@ -4,8 +4,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.encoding import force_text, force_bytes
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-
-from user_auth.forms import UserProfile
+from user_auth.forms import UpdateProfile, UserProfile
 from user_auth.models import Profile
 from user_auth.tokens import account_activation_token
 from user_auth.forms import RegisterForm
@@ -16,11 +15,6 @@ from django.core.mail import EmailMessage
 from django.contrib.auth.models import User
 
 
-def home_page(request):
-    return HttpResponse('Temporary Home page')
-    # return render(request, "user_auth/base.html")
-
-
 def login_page(request):
     form = AuthenticationForm()
     if request.method == 'POST':
@@ -28,7 +22,7 @@ def login_page(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return HttpResponse('login successful')
+            return redirect('news:scrape')
 
     return render(request, 'user_auth/login.html', {'form': form})
 
@@ -36,7 +30,7 @@ def login_page(request):
 @login_required
 def logout_user(request):
     logout(request)
-    return redirect('login')
+    return redirect('news:scrape')
 
 
 def activate(request, uidb64, token):
@@ -52,6 +46,27 @@ def activate(request, uidb64, token):
         return redirect('user_auth:login')
     else:
         return HttpResponse('Activation link is invalid!')
+
+
+@login_required
+def user_profile(request):
+    user = request.user
+    print(user)
+    profile = Profile.objects.get(user_name__username=user)
+    if request.method == 'POST':
+        user_form = UpdateProfile(request.POST, instance=user)
+        news_form = UserProfile(request.POST, instance=profile)
+        if user_form.is_valid() and news_form.is_valid():
+            user_form.save()
+            news_form.save()
+            msg = 'Profile Details successfully updated!'
+            return render(request, 'user_auth/profile.html',
+                          {'user_form': user_form, 'news_form': news_form, 'msg': msg})
+
+    else:
+        user_form = UpdateProfile(instance=user)
+        news_form = UserProfile(instance=profile)
+        return render(request, 'user_auth/profile.html', {'user_form': user_form, 'news_form': news_form})
 
 
 def register_user(request):
@@ -82,5 +97,5 @@ def register_user(request):
             # )
             # email.send()
             # return HttpResponse('Please confirm your email')
-            return HttpResponse('Login success')
+            return redirect('user_auth:login')
     return render(request, 'user_auth/register.html', {'form': form, 'form_profile': form_profile})

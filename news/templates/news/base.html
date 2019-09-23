@@ -78,14 +78,18 @@ a:hover, a:focus {
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">Contact</a>
                                 </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@user</a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="#"> My Profile</a>
-                                        <a class="dropdown-item" href="#">My preferences</a>
-                                        <a class="dropdown-item" href="#">Log Out</a>
-                                    </div>
-                                </li>
+                                {% if not user.is_authenticated %}
+                                    <li><a class="nav-link" href="{% url 'user_auth:login' %}">Login</a></li>
+                                    <li><a class="nav-link" href="{% url 'user_auth:register_user' %}">SignUp</a></li>
+                                {% else %}
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#user</a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                <a class="dropdown-item" href="{% url 'user_auth:user_profile' %}">My Profile</a>
+                                                <a class="dropdown-item" href="{% url 'user_auth:logout_user' %}">Logout</a>
+                                            {% endif %}
+                                        </div>
+                                    </li>
                             </ul>
                             <!-- Search Form  -->
                             <div id="search-wrapper">
@@ -135,11 +139,16 @@ a:hover, a:focus {
                     <div class="footer-single-widget">
                         <ul class="footer-menu d-flex justify-content-between">
                             <li><a href="#">Home</a></li>
-                            <li><a href="#">Fashion</a></li>
-                            <li><a href="#">Lifestyle</a></li>
+                            <li><a href="#">News</a></li>
+                            <li><a href="#">Sports</a></li>
                             <li><a href="#">Contact</a></li>
-                            <li><a href="#">Gadgets</a></li>
-                            <li><a href="#">Video</a></li>
+                            {% if not user.is_authenticated %}
+                                <li><a href="{% url 'user_auth:login' %}">Login</a></li>
+                                <li><a href="{% url 'user_auth:register_user' %}">Signup</a></li>
+                            {% else %}
+                                <li><a href="{% url 'user_auth:user_profile' %}">Profile</a></li>
+                                <li><a href="{% url 'user_auth:logout_user' %}">Logout</a></li>
+                            {% endif %}
                         </ul>
                     </div>
                 </div>

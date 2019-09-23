@@ -1,10 +1,6 @@
 {% extends 'news/base.html' %}
 {% load static %}
 
-{% block head %}
-    <base target = "_blank">
-{% endblock %}
-
 {% block content %}
     {% if slider_1 %}
     <div class="main-content-wrapper section-padding-50">
@@ -72,7 +68,7 @@
                                         </div>
 
                                         <div class="col-12 col-md-4">
-                                            <div class="world-catagory-slider owl-carousel wow fadeInUpBig" data-wow-delay="0.6s">
+                                            <div class="world-catagory-slider owl-carousel wow fadeInUpBig" data-wow-delay="0.5s">
 
                                                 <!-- Single Blog Post -->
                                                 {% for item in slider_2 %}
@@ -102,7 +98,7 @@
                                         {% for item in blog_2 %}
                                         <div class="col-12 col-md-3">
                                             <!-- Single Blog Post -->
-                                            <div class="single-blog-post wow fadeInUpBig"  data-wow-delay="0.6s">
+                                            <div class="single-blog-post wow fadeInUpBig"  data-wow-delay="0.5s">
                                                 <!-- Post Thumbnail -->
                                                 <div class="post-thumbnail">
                                                     <img src={{ item.image_url }} alt="">
@@ -124,7 +120,7 @@
 
 
                                         <div class="col-12 mt-15">
-                                            <div class="world-catagory-slider2 owl-carousel wow fadeInUpBig " data-wow-delay="1s">
+                                            <div class="world-catagory-slider2 owl-carousel wow fadeInUpBig " data-wow-delay="0.8s">
                                                 <!-- ========= Single Catagory Slide ========= -->
                                                 {% for list_item in slider_3 %}
                                                 <div class="single-cata-slide" style="padding: 0px 5px 0px 5px">
@@ -166,6 +162,5 @@
             </div>
         </div>
     </div>
-
 {% endif %}
 {% endblock %}
