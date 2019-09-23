@@ -33,4 +33,11 @@ def scrape(request):
         new_healine.time = time
         new_healine.save()
     news = HeadLine.objects.all()
-    return render(request, 'news/news_list.html', {'news_list': news})
+    slider_1 = news[:4]
+    slider_2 = news[4:8]
+    blog_1 = news[8:12]
+    blog_2 = news[12:16]
+    n = 4
+    slider_3 = [news[i * n:(i + 1) * n] for i in range((len(news[16:]) + n - 1) // n)]
+
+    return render(request, 'news/news_list.html', {'slider_1': slider_1,'slider_2':slider_2,'slider_3':slider_3,'blog_1':blog_1,'blog_2':blog_2})
