@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form>
+    {% csrf_token %}
+    <option value="">---------</option>
+    {% for sport in sports %}
+    <option value="{{ sport.pk }}">{{ sport.name }}</option>
+    {% endfor %}
+    <br>
+    <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

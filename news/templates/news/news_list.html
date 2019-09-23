@@ -5,6 +5,15 @@
     <title>news</title>
 </head>
 <body>
+
+{% if not user.is_authenticated %}
+    <a href="{% url 'user_auth:login' %}">Login</a><br><br><br>
+    <a href="{% url 'user_auth:register_user' %}">SignUp</a><br><br><br>
+{% else %}
+    <a href="{% url 'user_auth:user_profile' %}">My Profile</a><br><br><br>
+    <a href="{% url 'user_auth:logout_user' %}">Logout</a><br><br><br>
+{% endif %}
+
 {% if news_list %}
     {% for news_l in news_list %}
         Tilte:<a href={{ news_l.url }}>{{ news_l.title }}<br></a>
