@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'user_auth',
+    'sports',
     'bootstrapform',
     'widget_tweaks',
     'news'
@@ -56,8 +57,8 @@ ROOT_URLCONF = 'sportshub.urls'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'swathisindhu09@gmail.com'
-EMAIL_HOST_PASSWORD = 'Srinivasam123@'
+EMAIL_HOST_USER = 'genericproject11@gmail.com'
+EMAIL_HOST_PASSWORD = 'iambatman@Jitesh'
 EMAIL_USE_TLS = True
 
 TEMPLATES = [
@@ -86,7 +87,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'sportshub',
         'USER': 'root',
-        'PASSWORD': 'mysqlroot',
+        'PASSWORD': 'jitesh123',
         'HOST': 'localhost',
         'PORT': '',
     }

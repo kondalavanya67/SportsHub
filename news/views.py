@@ -1,6 +1,4 @@
 from django.shortcuts import render
-
-# Create your views here.
 import requests
 
 requests.packages.urllib3.disable_warnings()
