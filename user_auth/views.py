@@ -22,7 +22,7 @@ def login_page(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('news:scrape')
+            return redirect('news:news_list')
 
     return render(request, 'user_auth/login.html', {'form': form})
 
@@ -30,7 +30,7 @@ def login_page(request):
 @login_required
 def logout_user(request):
     logout(request)
-    return redirect('news:scrape')
+    return redirect('news:news_list')
 
 
 def activate(request, uidb64, token):

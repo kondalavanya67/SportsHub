@@ -1,0 +1,27 @@
+{% extends 'news/base.html' %}
+{% load static %}
+
+{% block content %}
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="title">Tournaments</li>
+    </ul>
+    {% if user.is_authenticated %}
+        <a href={% url 'sports:create_tournament' %}><button class="btn btn-info">Create Tournament</button></a>
+        <a href={% url 'sports:my_tournament' %}><button class="btn btn-info">Your Tournaments</button></a>
+    {% endif %}
+    <br>
+    {% if Tournaments %}
+
+        {% for item in Tournaments %}
+            <li>
+                Name : {{ item.name}}<br>
+                Description : {{ item.description }}<br>
+                Location : {{ item.location }}<br>
+                Start Date : {{ item.start_date }}<br>
+                End Date : {{ item.end_date }}<br>
+            </li>
+        {% endfor %}
+    {% else %}
+        <i>OOPS, No Tournaments to show</i>
+    {% endif %}
+{% endblock %}
