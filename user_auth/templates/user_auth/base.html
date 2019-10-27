@@ -1,10 +1,21 @@
-    <!doctype html>
+<!doctype html>
 <html lang="en">
+{% load static %}
   <head>
     <title>sports hub</title>
+      <link rel="stylesheet" href="{% static 'news/css/style1.css' %}">
+      <link rel="stylesheet" href="{% static 'news/fonts/material-icon/css/material-design-iconic-font.min.css'%}">
   </head>
   <body>
+     <div id="preloader">
+        <div class="preload-content">
+            <div id="world-load"></div>
+        </div>
+    </div>
 
+    <!-- ***** Header Area End ***** -->
+
+    <!-- ********** Hero Area Start ********** -->
 
     {% block verify %}{% endblock %}
     {% block content %}{% endblock %}
@@ -14,6 +25,8 @@
 
 
 
-
+    <!-- jQuery (Necessary for All JavaScript Plugins) -->
+    <script src="{% static 'news/js/jquery/jquery-2.2.4.min.js' %}"></script>
+    <script src="{% static 'news/js/active.js' %}"></script>
   </body>
 </html>

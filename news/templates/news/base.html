@@ -78,12 +78,15 @@ a:hover, a:focus {
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">Contact</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href={% url 'sports:tournament_list' %}>Tournaments</a>
+                                </li>
                                 {% if not user.is_authenticated %}
                                     <li><a class="nav-link" href="{% url 'user_auth:login' %}">Login</a></li>
                                     <li><a class="nav-link" href="{% url 'user_auth:register_user' %}">SignUp</a></li>
                                 {% else %}
                                     <li class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#user</a>
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ user.username }}</a>
                                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                                 <a class="dropdown-item" href="{% url 'user_auth:user_profile' %}">My Profile</a>
                                                 <a class="dropdown-item" href="{% url 'user_auth:logout_user' %}">Logout</a>
