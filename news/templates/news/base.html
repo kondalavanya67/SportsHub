@@ -21,24 +21,26 @@
     {% endblock %}
 
     <style>
-        a {
-  -webkit-transition-duration: 500ms;
-  transition-duration: 500ms;
-  text-decoration: none;
-  outline: none;
-  font-size: 14px;
-  font-weight: 400;
-  font-family: "Ubuntu", sans-serif;
-  color: black;}
-a:hover, a:focus {
-    font-family: "Ubuntu", sans-serif;
-    -webkit-transition-duration: 500ms;
-    transition-duration: 500ms;
-    text-decoration: none;
-    outline: none;
-    font-size: 14px;
-    font-weight: 400;
-    color: #0000ff; }
+    a {
+      -webkit-transition-duration: 500ms;
+      transition-duration: 500ms;
+      text-decoration: none;
+      outline: none;
+      font-size: 14px;
+      font-weight: 400;
+      font-family: "Ubuntu", sans-serif;
+      color: black;}
+    a:hover, a:focus {
+        font-family: "Ubuntu", sans-serif;
+        -webkit-transition-duration: 500ms;
+        transition-duration: 500ms;
+        text-decoration: none;
+        outline: none;
+        font-size: 14px;
+        font-weight: 400;
+        color: #0000ff; }
+    a.link {
+        color: white;}
 
     </style>
 
@@ -97,14 +99,6 @@ a:hover, a:focus {
                                         </div>
                                     </li>
                             </ul>
-                            <!-- Search Form  -->
-                            <div id="search-wrapper">
-                                <form action="#">
-                                    <input type="text" id="search" placeholder="Search something...">
-                                    <div id="close-icon"></div>
-                                    <input class="d-none" type="submit" value="">
-                                </form>
-                            </div>
                         </div>
                     </nav>
                 </div>
@@ -136,32 +130,31 @@ a:hover, a:focus {
     <footer class="footer-area">
         <div class="container">
             <div class="row">
-                <div class="col-12 col-md-4">
+                <div class="col-12 col-md-6">
                     <div class="footer-single-widget">
-                        <a href="#">SportsHub</a>
+                        <a class="link" href="#" style="font-size:25px;">SportsHub</a>
                     </div>
-                </div>
-                <div class="col-12 col-md-4">
+                    <br>
                     <div class="footer-single-widget">
                         <ul class="footer-menu d-flex justify-content-between">
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#">News</a></li>
-                            <li><a href="#">Sports</a></li>
-                            <li><a href="#">Contact</a></li>
+                            <li><a class="link" href="#">Home</a></li>
+                            <li><a class="link" href="#">News</a></li>
+                            <li><a class="link" href="#">Sports</a></li>
+                            <li><a class="link" href="#">Contact</a></li>
                             {% if not user.is_authenticated %}
-                                <li><a href="{% url 'user_auth:login' %}">Login</a></li>
-                                <li><a href="{% url 'user_auth:register_user' %}">Signup</a></li>
+                                <li><a class="link" href="{% url 'user_auth:login' %}">Login</a></li>
+                                <li><a class="link" href="{% url 'user_auth:register_user' %}">Signup</a></li>
                             {% else %}
-                                <li><a href="{% url 'user_auth:user_profile' %}">Profile</a></li>
-                                <li><a href="{% url 'user_auth:logout_user' %}">Logout</a></li>
+                                <li><a class="link"  href="{% url 'user_auth:user_profile' %}">Profile</a></li>
+                                <li><a class="link" href="{% url 'user_auth:logout_user' %}">Logout</a></li>
                             {% endif %}
                         </ul>
                     </div>
                 </div>
-                <div class="col-12 col-md-4">
-                    <div class="footer-single-widget">
-                        <h5>Subscribe</h5>
-                        <form action="#" method="post">
+                <div class="col-12 col-md-6">
+                    <div class="footer-single-widget"><br>
+                        <h5>Subscribe</h5><br>
+                        <form style="padding: 0px" action="#" method="post">
                             <input type="email" name="email" id="email" placeholder="Enter your mail">
                             <button type="button"><i class="fa fa-arrow-right"></i></button>
                         </form>
