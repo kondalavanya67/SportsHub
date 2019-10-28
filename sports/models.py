@@ -35,3 +35,13 @@ class Tournaments(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class CoachingCenters(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100, null=False)
+    description = models.TextField(max_length=1000)
+    address = models.CharField(max_length=1000)
+
+    def __str__(self):
+        return self.name

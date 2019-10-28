@@ -1,0 +1,22 @@
+{% extends 'news/base.html' %}
+{% load static %}
+
+{% block content %}
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="title">Post your coaching center</li>
+    </ul>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in coaching_centersForm %}
+        <div class="wrap-input100 validate-input">
+            <span class="label-input100 p-t-30">{{ field.label_tag }}</span><br>
+            {{ field }}
+            <span class="focus-input100"></span>
+        </div>
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+        {% endfor %}
+        <input type="submit">
+    </form>
+{% endblock %}
