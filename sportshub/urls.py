@@ -5,7 +5,7 @@ from django.contrib.auth import views as auth_views
 from news import views as news_views
 
 urlpatterns = [
-    path('', news_views.scrape),
+    path('', news_views.news_list),
     path('sports/', include('sports.urls')),
     path('user_auth/', include('user_auth.urls')),
     path('news/', include('news.urls')),

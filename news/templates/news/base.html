@@ -78,6 +78,12 @@ a:hover, a:focus {
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">Contact</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href={% url 'sports:tournament_list' %}>Tournaments</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href={% url 'sports:coaching_centers_list' %}>Coaching Centers</a>
+                                </li>
                                 {% if not user.is_authenticated %}
                                     <li><a class="nav-link" href="{% url 'user_auth:login' %}">Login</a></li>
                                     <li><a class="nav-link" href="{% url 'user_auth:register_user' %}">SignUp</a></li>
