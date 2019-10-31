@@ -88,6 +88,10 @@ a:hover, a:focus {
   background-size: cover;
   }
 
+  #slide3 {
+    background-color: white;
+  }
+
 #preloader {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -319,7 +323,7 @@ img {
     width: 100%;
     height: 100%;
     content: '';
-    background-color: rgba(0, 0, 0, 0.7); }
+    background-color: rgba(0, 0, 0, 0.5); }
 
 .world-btn {
   position: relative;
@@ -343,7 +347,7 @@ img {
   top: 0;
   width: 100%;
   height: auto;
-  margin-top: 20px;
+  margin-top: 15px;
   left: 0;
   z-index: 300;
   -webkit-transition-duration: 500ms;
@@ -400,6 +404,14 @@ img {
   text-align:center;
   font-family:mountains;
   font-size: 120px;
+  color: white;
+}
+
+.hero-content-pages {
+  padding: 120px 0px 70px 250px;
+  text-align:left;
+  font-family:mountains;
+  font-size: 60px;
   color: white;
 }
 
@@ -771,9 +783,7 @@ input:-moz-placeholder {
 
   .single-blog-post.post-style-3 .post-thumbnail {
     position: relative;
-    z-index: 1;
-    
-    }
+    z-index: 1;}
     .single-blog-post.post-style-3 .post-thumbnail::after {
       width: 100%;
       height: 100%;

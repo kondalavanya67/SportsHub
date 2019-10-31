@@ -36,6 +36,21 @@
         }
         a.link {
             color: white;}
+        /*
+        .header-area {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: auto;
+            margin-top: 0px;
+            left: 0;
+            z-index: 300;
+            background-color: black}
+        .header-area .navbar {
+            border-bottom: 0px;
+            background-color: black;
+            height: 55px; } ^/
+
     </style>
 
   </head>
@@ -94,13 +109,14 @@
 
     <!-- ********** Hero Area Start ********** -->
     <div class="hero-area" style="color:black">
-        <div class="single-hero-slide bg-img background-overlay" id="slide2" style="padding-bottom: 100px">
+        <div class="single-hero-slide bg-img background-overlay" id="slide2" style="padding-bottom: 100px;">
             {% block verify %}{% endblock %}
             {% block content %}{% endblock %}
             {% block login %}{% endblock %}
             {% block register %}{% endblock %}
             {% block profile %}{% endblock %}
         </div>
+    </div>
     <!-- ********** Hero Area End ********** -->
 
         <!-- ***** Footer Area Start ***** -->
