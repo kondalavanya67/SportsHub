@@ -5,30 +5,31 @@
 
 {% block register %}
 <body>
-<div class="main">
-    <div class="container">
+<div class="main" style="padding-top: 180px">
+    <div class="container-form">
         <div class="booking-content">
             <div class="booking-form">
                 <form class="booking-form" method="post">
                     {% csrf_token %}
-                    <h2>Sign Up</h2>
-            {% for field in form %}
-            <div class="form-group form-input">
-                <span class="form-label">{{ field.label_tag }}</span><br>
-                {{ field }}
-            </div>
-            {% for error in field.errors %}
-              <p style="font-size: 15px; padding-bottom: 15px; color: red">{{ error }}</p>
-            {% endfor %}
-            {% endfor %}
-                    <div class="form-submit">
-                            <input type="submit" value="Sign In" class="submit" id="submit" name="submit" />
-                        <a href="{% url 'user_auth:register_user' %}">
-                    Sign Up
-                </a>
+                        <div class="hero-content" style="padding:0px 0px 30px 0px;  font-size:35px; color: black;">Log In</div>
+                    {% for field in form %}
+                    <div class="form-group form-input">
+                        <span class="form-label">{{ field.label_tag }}</span><br>
+                        {{ field }}
                     </div>
+                    {% for error in field.errors %}
+                      <p style="font-size: 15px; color: red">{{ error }}</p>
+                    {% endfor %}
+                    {% endfor %}
+                    <br>
+                    <div class="form-submit"  style="padding-left: 110px">
+                            <input type="submit" value="Log In" class="submit" id="submit" name="submit"/>
+                    </div><br>
+                     <div style="text-align: center; font-size: 15px">Not a member? <a href="{% url 'user_auth:register_user' %}">
+                            Sign Up here.
+                     </a></div>
 
-        </form>
+                </form>
         </div>
         </div>
         </div>

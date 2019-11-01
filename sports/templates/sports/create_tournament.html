@@ -9,11 +9,11 @@
         {% csrf_token %}
         {% for field in tornamentFourm %}
         <div class="wrap-input100 validate-input">
-            <span class="label-input100 p-t-30">{{ field.label_tag }}</span><br>
-            {{ field }}
+            <span class="label-input100 p-t-30">{{ field.label_tag }}</span>
             {% if field.name == 'start_date' or field.name ==  'end_date' %}
-                Format:mm/dd/yy<br>
+                (mm/dd/yy)<br>
             {% endif %}
+            {{ field }}
             <span class="focus-input100"></span>
         </div>
         {% for error in field.errors %}
