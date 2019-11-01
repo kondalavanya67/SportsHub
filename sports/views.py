@@ -25,12 +25,6 @@ def choose_favorite_sports(request):
 
 def tournament_list(request):
     tournaments = Tournaments.objects.all()
-    return render(request, 'sports/tournament_list.html',
-                  {'Tournaments': tournaments})
-
-
-@login_required
-def create_tournament(request):
     tournamentForm = TournamentRegistration()
     if request.method == 'POST':
         form = TournamentRegistration(data=request.POST)
@@ -43,16 +37,14 @@ def create_tournament(request):
             location = form.cleaned_data['location']
             Tournaments.objects.create(name=name, description=des, start_date=s_date, end_date=e_date,
                                        location=location, user=user)
-            return HttpResponseRedirect(reverse('sports:tournament_list'))
-    return render(request, 'sports/create_tournament.html', {'tornamentFourm': tournamentForm})
-
-
-@login_required
-def user_tournament(request):
-    user = User.objects.get(pk=request.user.pk)
-    tournaments = Tournaments.objects.filter(user=user)
-    return render(request, 'sports/user_tournament_list.html',
-                  {'Tournaments': tournaments})
+    if request.user.is_authenticated:
+        user = User.objects.get(pk=request.user.pk)
+        user_tournaments = Tournaments.objects.filter(user=user)
+        return render(request, 'sports/tournament_list.html',
+                      {'Tournaments': tournaments, 'tornamentFourm': tournamentForm,
+                       'User_Tournaments': user_tournaments})
+    return render(request, 'sports/tournament_list.html',
+                  {'Tournaments': tournaments, 'tornamentFourm': tournamentForm})
 
 
 @login_required
@@ -64,7 +56,7 @@ def delete_tournament(request, t_id):
             t.delete()
         except:
             pass
-    return HttpResponseRedirect(reverse('sports:my_tournament'))
+    return HttpResponseRedirect(reverse('sports:tournament_list'))
 
 
 def coaching_centers_list(request):
