@@ -84,9 +84,13 @@
 
                                                 <!-- Post Content -->
                                                 <div class="post-content">
-                                                    <a href={% url 'sports:delete_tournament' item.pk %}>
-                                                        <span style="float: right"><img src="https://img.icons8.com/ios/20/000000/cancel.png"></span>
-                                                    </a>
+
+                                                    <span style="float: right">
+                                                        <button type="button" class="btn btn-primary" style="background-color: white; border-color: white;padding: 10px" data-toggle="modal" data-target="#myModal">
+                                                            <img src="https://img.icons8.com/ios/20/000000/cancel.png">
+                                                        </button>
+                                                    </span>
+
                                                     <h5 class="text-wrap-headline"> {{ item.name }}</h5>
                                                     <p>{{ item.description }}</p>
                                                     <!-- Post Meta -->
@@ -94,10 +98,31 @@
                                                         <p>Location : <span style="font-weight: bold">{{ item.location }}</span><br>
                                                             Time: <span style="font-weight: bold">{{ item.start_date }} to {{ item.end_date }}</span></p>
                                                     </div>
+                                                </diV>
 
+                                            </div>
+
+
+                                            <div class="modal" id="myModal">
+                                                <div class="modal-dialog">
+                                                  <div class="modal-content">
+
+                                                    <!-- Modal body -->
+                                                    <div class="modal-body">
+                                                      Do you want to delete the tournament?
+                                                    </div>
+
+                                                    <!-- Modal footer -->
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
+                                                        <a href={% url 'sports:delete_tournament' item.pk %}><button type="button" class="btn btn-danger" data-dismiss="modal">Delete</button></a>
+                                                    </div>
+
+                                                  </div>
                                                 </div>
                                             </div>
-                                            </div>
+                                        </div>
+
                                         {% endfor %}
                                         {% else %}
                                             <i>Oops!!, No Tournaments to show.</i>
@@ -144,4 +169,5 @@ style=" fill:#000000;"><g fill="none" fill-rule="none" stroke="none" stroke-widt
             </div>
         </div>
     </div>
+
 {% endblock %}
