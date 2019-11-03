@@ -73,8 +73,8 @@
 
                                 <div class="tab-pane fade" id="world-tab-2" role="tabpanel" aria-labelledby="tab2">
                                     <div class="row">
-                                        {% if Tournaments %}
-                                        {% for item in Tournaments %}
+                                        {% if User_Tournaments %}
+                                        {% for item in User_Tournaments %}
                                             <div class="col-12 col-md-6" style="padding-bottom: 10px">
                                             <div class="single-blog-post post-style-2 d-flex align-items-center wow fadeInUpBig">
                                                 <!-- Post Thumbnail -->
@@ -156,7 +156,7 @@
                                 </div>
                                 <br>
                                     {% if user.is_authenticated %}
-                                        <center><a href={% url 'sports:create_tournament' %}><button class="btn btn-info"><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                                        <center><a href=#><button class="btn btn-info"><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
 width="15" height="15"
 viewBox="0 0 172 172"
 style=" fill:#000000;"><g fill="none" fill-rule="none" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none" fill-rule="nonzero"></path><g fill="#ffffff" fill-rule="evenodd"><path d="M78.83333,14.33333v64.5h-64.5v14.33333h64.5v64.5h14.33333v-64.5h64.5v-14.33333h-64.5v-64.5z"></path></g></g></svg> Create Tournament</button></a></center>
