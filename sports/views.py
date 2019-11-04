@@ -60,7 +60,6 @@ def delete_tournament(request, t_id):
 
 
 def coaching_centers_list(request):
-    coaching_centers = CoachingCenters.objects.all()
     coaching_centersForm = CoachingCenterRegistration()
     if request.method == 'POST':
         form = CoachingCenterRegistration(data=request.POST)
@@ -71,10 +70,11 @@ def coaching_centers_list(request):
             add = form.cleaned_data['address']
             CoachingCenters.objects.create(name=name, description=des,
                                            address=add, user=user)
+    coaching_centers = CoachingCenters.objects.all()
     if request.user.is_authenticated:
         user = User.objects.get(pk=request.user.pk)
         user_coaching_centers = CoachingCenters.objects.filter(user=user)
-        return render(request, 'sports/user_coaching_centers.html',
+        return render(request, 'sports/coaching_centers_list.html',
                       {'user_coaching_centers': user_coaching_centers, 'coaching_centers': coaching_centers, 'coaching_centersForm': coaching_centersForm})
     return render(request, 'sports/coaching_centers_list.html',
                   {'coaching_centers': coaching_centers, 'coaching_centersForm': coaching_centersForm})
