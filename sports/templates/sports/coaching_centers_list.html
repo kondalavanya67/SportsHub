@@ -30,7 +30,7 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link" id="tab2" data-toggle="tab" href="#world-tab-3" role="tab" aria-controls="world-tab-3" aria-selected="false">Add new Coaching Center<img src="https://img.icons8.com/material-sharp/14/000000/plus-math.png"></a>
+                                    <a class="nav-link" id="tab3" data-toggle="tab" href="#world-tab-3" role="tab" aria-controls="world-tab-3" aria-selected="false">Add new Coaching Center<img src="https://img.icons8.com/material-sharp/14/000000/plus-math.png"></a>
                                 </li>
                                 {% endif %}
                             </ul>
@@ -56,6 +56,8 @@
                                                     <!-- Post Meta -->
                                                     <div class="text-wrap-headline">
                                                         <p>Address : <span style="font-weight: bold">{{ item.address }}</span><br>
+                                                        </p>
+                                                    </div>
                                                 </div>
                                             </div>
                                             </div>
@@ -69,11 +71,11 @@
 
                                 <div class="tab-pane fade" id="world-tab-2" role="tabpanel" aria-labelledby="tab2">
                                         <div class="hero-content" style="padding:0px 0px 15px 0px;  font-size:35px; color: black;">
-                                            Your Coachin Centers
+                                            Your Coaching Centers
                                         </div><br>
                                     <div class="row">
-                                        {% if User_Tournaments %}
-                                        {% for item in User_Tournaments %}
+                                        {% if user_coaching_centers %}
+                                        {% for item in user_coaching_centers %}
                                             <div class="col-12 col-md-6" style="padding-bottom: 10px">
                                             <div class="single-blog-post post-style-2 d-flex align-items-center wow fadeInUpBig">
                                                 <!-- Post Thumbnail -->
@@ -85,7 +87,7 @@
                                                 <div class="post-content">
 
 
-                                                    <a href={% url 'sports:delete_tournament' item.pk %}>
+                                                    <a href={% url 'sports:delete_coaching_centers' item.pk %}>
                                                         <span style="float: right"><img src="https://img.icons8.com/ios/20/000000/cancel.png"></span>
                                                     </a>
 
@@ -94,8 +96,7 @@
                                                     <p>{{ item.description }}</p>
                                                     <!-- Post Meta -->
                                                     <div class="text-wrap-headline">
-                                                        <p>Location : <span style="font-weight: bold">{{ item.location }}</span><br>
-                                                            Time: <span style="font-weight: bold">{{ item.start_date }} to {{ item.end_date }}</span></p>
+                                                        <p>Location : <span style="font-weight: bold">{{ item.address }}</span></p><br>
                                                     </div>
                                                 </div>
                                             </div>
@@ -103,7 +104,7 @@
 
                                         {% endfor %}
                                         {% else %}
-                                            <i>Oops!!, No Tournaments to show.</i>
+                                            <i>Oops!!, You don't have any Coaching Centers to show.</i>
                                         {% endif %}
 
                                     </div>
@@ -114,15 +115,12 @@
                                         <div class="col-12 col-md-12">
                                         <form class="booking-form" method="post" style="width:80%">
                                             {% csrf_token %}
-                                                <div class="hero-content" style="padding:0px 0px 15px 0px;  font-size:35px; color: black;">
-                                                    Create a tournament
+                                                <div class="hero-content" style="padding:0px 0px 20px 0px; font-size:35px; color: black;">
+                                                    Create a Coaching Center
                                                 </div>
-                                            {% for field in tornamentFourm %}
+                                            {% for field in coaching_centersForm %}
                                             <div class="form-group form-input">
                                                 <span class="form-label">{{ field.label_tag }}</span><br>
-                                                {% if field.name == 'start_date' or field.name ==  'end_date' %}
-                                                        (mm/dd/yy)<br>
-                                                {% endif %}
                                                 {{ field }}
                                                 <span class="focus-input100"></span>
                                             </div>
@@ -145,5 +143,4 @@
             </div>
         </div>
     </div>
-
 {% endblock %}
