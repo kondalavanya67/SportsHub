@@ -2,11 +2,9 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from user_auth import views
 from django.contrib.auth import views as auth_views
-from news import views as news_views
 
 urlpatterns = [
-    path('', news_views.news_list),
-    path('sports/', include('sports.urls')),
+    path('', include('sports.urls')),
     path('user_auth/', include('user_auth.urls')),
     path('news/', include('news.urls')),
     path('admin/', admin.site.urls),

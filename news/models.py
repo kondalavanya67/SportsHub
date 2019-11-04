@@ -10,6 +10,7 @@ class HeadLine(models.Model):
     url = models.TextField()
     site = models.TextField(default="asdf")
     time = models.TextField(default="wow")
+    category = models.CharField(max_length=1000, null=True)
 
     def __str__(self):
         return self.title

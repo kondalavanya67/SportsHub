@@ -2,9 +2,40 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-from sports.models import Sport, Tournaments, CoachingCenters
+from sports.models import Tournaments, CoachingCenters
+from news.models import LastNewsUpdate, HeadLine
 from sports.forms import FavoriteSports, TournamentRegistration, CoachingCenterRegistration
 from django.urls import reverse
+from news.views import scrape
+from datetime import datetime
+import time
+
+
+def homepage(request):
+    now = datetime.now()
+    last_update = LastNewsUpdate.objects.all()
+    if len(last_update) == 0:
+        print("oops")
+        scrape()
+        LastNewsUpdate.objects.create(last_update=datetime.now())
+    else:
+        d1_ts = time.mktime(last_update[0].last_update.timetuple())
+        d2_ts = time.mktime(now.timetuple())
+        if (int(d2_ts - d1_ts) / 60) > 30:
+            scrape()
+            LastNewsUpdate.objects.all().delete()
+            LastNewsUpdate.objects.create(last_update=datetime.now())
+    news = HeadLine.objects.filter(category="sports")
+    slider_1 = news[:4]
+    slider_2 = news[4:8]
+    blog_1 = news[8:12]
+    blog_2 = news[12:16]
+    n = 4
+    slider_3 = [news[i * n:(i + 1) * n] for i in range((len(news[16:]) + n - 1) // n)]
+
+    return render(request, 'sports/homepage.html',
+                  {'slider_1': slider_1, 'slider_2': slider_2, 'slider_3': slider_3, 'blog_1': blog_1,
+                   'blog_2': blog_2})
 
 
 def choose_favorite_sports(request):
@@ -75,7 +106,8 @@ def coaching_centers_list(request):
         user = User.objects.get(pk=request.user.pk)
         user_coaching_centers = CoachingCenters.objects.filter(user=user)
         return render(request, 'sports/coaching_centers_list.html',
-                      {'user_coaching_centers': user_coaching_centers, 'coaching_centers': coaching_centers, 'coaching_centersForm': coaching_centersForm})
+                      {'user_coaching_centers': user_coaching_centers, 'coaching_centers': coaching_centers,
+                       'coaching_centersForm': coaching_centersForm})
     return render(request, 'sports/coaching_centers_list.html',
                   {'coaching_centers': coaching_centers, 'coaching_centersForm': coaching_centersForm})
 

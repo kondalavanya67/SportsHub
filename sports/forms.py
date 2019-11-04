@@ -1,10 +1,10 @@
 from django import forms
-from sports.models import Sport, Tournaments, CoachingCenters
+from sports.models import Sport_Info, Tournaments, CoachingCenters
 
 
 class FavoriteSports(forms.ModelForm):
     class Meta:
-        model = Sport
+        model = Sport_Info
         fields = ['name']
 
 
