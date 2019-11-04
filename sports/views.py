@@ -61,12 +61,6 @@ def delete_tournament(request, t_id):
 
 def coaching_centers_list(request):
     coaching_centers = CoachingCenters.objects.all()
-    return render(request, 'sports/coaching_centers_list.html',
-                  {'coaching_centers': coaching_centers})
-
-
-@login_required
-def create_coaching_centers(request):
     coaching_centersForm = CoachingCenterRegistration()
     if request.method == 'POST':
         form = CoachingCenterRegistration(data=request.POST)
@@ -77,16 +71,13 @@ def create_coaching_centers(request):
             add = form.cleaned_data['address']
             CoachingCenters.objects.create(name=name, description=des,
                                            address=add, user=user)
-            return HttpResponseRedirect(reverse('sports:coaching_centers_list'))
-    return render(request, 'sports/create_coaching_centers.html', {'coaching_centersForm': coaching_centersForm})
-
-
-@login_required
-def user_coaching_centers(request):
-    user = User.objects.get(pk=request.user.pk)
-    coaching_centers = CoachingCenters.objects.filter(user=user)
-    return render(request, 'sports/user_coaching_centers.html',
-                  {'coaching_centers': coaching_centers})
+    if request.user.is_authenticated:
+        user = User.objects.get(pk=request.user.pk)
+        user_coaching_centers = CoachingCenters.objects.filter(user=user)
+        return render(request, 'sports/user_coaching_centers.html',
+                      {'user_coaching_centers': user_coaching_centers, 'coaching_centers': coaching_centers, 'coaching_centersForm': coaching_centersForm})
+    return render(request, 'sports/coaching_centers_list.html',
+                  {'coaching_centers': coaching_centers, 'coaching_centersForm': coaching_centersForm})
 
 
 @login_required
@@ -98,4 +89,4 @@ def delete_coaching_centers(request, c_id):
             t.delete()
         except:
             pass
-    return HttpResponseRedirect(reverse('sports:my_coaching_centers'))
+    return HttpResponseRedirect(reverse('sports:coaching_centers_list'))
