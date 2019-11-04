@@ -4,6 +4,7 @@ from sports import views
 app_name = 'sports'
 
 urlpatterns = [
+    path('', views.homepage, name="homepage"),
     path('choose_favorites/', views.choose_favorite_sports, name='choose_favorites'),
     path('tournament_list/', views.tournament_list, name='tournament_list'),
     path('delete_tournament/<int:t_id>', views.delete_tournament, name='delete_tournament'),
