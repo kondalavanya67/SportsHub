@@ -7,7 +7,7 @@
     </ul>
     {% if user.is_authenticated %}
         <a href={% url 'sports:create_coaching_centers' %}><button class="btn btn-info">Post a coaching center</button></a>
-        <a href={% url 'sports:my_coaching_centers' %}><button class="btn btn-info">Your coaching centers</button></a>
+        <a href={% url 'sports:coaching_centers_list' %}><button class="btn btn-info">Your coaching centers</button></a>
     {% endif %}
     <br>
     {% if coaching_centers %}
