@@ -5,7 +5,9 @@
 
     <!-- ********** Hero Area Start ********** -->
     <div class="hero-area">
-        <div class="single-hero-slide bg-img background-overlay" id="slide2" style="height: 300px;"><div class="hero-content-pages">Coaching Centers</div></div>
+        <div class="single-hero-slide bg-img background-overlay" id="slide2" style="height: 300px;">
+            <div class="hero-content-pages">Coaching Centers</div>
+        </div>
     </div>
     <!-- ********** Hero Area End ********** -->
 
@@ -136,18 +138,18 @@
                                                     Create a Coaching Center
                                                 </div>
                                             {% for field in coaching_centersForm %}
-                                            <div class="form-group form-input">
-                                                <span class="form-label">{{ field.label_tag }}</span><br>
+                                            <div class="group">
+                                                <span class="form-label">{{ field.label_tag }}</span><br><br>
                                                 {{ field }}
-                                                <span class="focus-input100"></span>
+                                                <span class="bar"></span>
                                             </div>
                                             {% for error in field.errors %}
                                               <p style="font-size: 15px; color: red">{{ error }}</p>
                                             {% endfor %}
                                             {% endfor %}
                                             <br>
-                                            <div class="form-submit"  style="padding-left: 110px">
-                                                    <input type="submit" value="Create" class="submit" id="submit" name="submit"/>
+                                            <div class="form-submit">
+                                                    <center><input type="submit" value="Create" class="submit" id="submit" name="submit"/></center>
                                             </div>
                                         </form>
                                         </div>

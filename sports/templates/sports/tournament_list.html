@@ -5,7 +5,9 @@
 
     <!-- ********** Hero Area Start ********** -->
     <div class="hero-area">
-        <div class="single-hero-slide bg-img background-overlay" id="slide2" style="height: 300px;"><div class="hero-content-pages">Tournaments</div></div>
+        <div class="single-hero-slide bg-img background-overlay" id="slide2" style="height: 300px;">
+            <div class="hero-content-pages">Tournaments</div>
+        </div>
     </div>
     <!-- ********** Hero Area End ********** -->
 
@@ -63,7 +65,7 @@
                                                             Time: <span style="font-weight: bold">{{ item.start_date }} to {{ item.end_date }}</span></p>
                                                     </div>
                                                     {% if user.is_authenticated %}
-                                                    <a href={% url 'sports:join_tournament' item.pk %}><button class="btn btn-primary">Join</button></a>
+                                                    <a href={% url 'sports:join_tournament' item.pk %}><button class="btn world-btn">Join</button></a>
                                                     {% endif %}
                                                     <p><span style="font-weight: bold">{{ item.no_of_joined }}</span>&nbsp;people joined</p><br>
                                                 </div>
@@ -126,7 +128,7 @@
                                         <div class="hero-content" style="padding:0px 0px 20px 0px;  font-size:35px; color: black;">
                                             Joined Tournaments
                                         </div><br>
-                                    <div class="row">
+                                        <div class="row">
                                         {% if joined_tournaments %}
                                         {% for item in joined_tournaments %}
                                             <div class="col-12 col-md-6" style="padding-bottom: 10px">
@@ -168,24 +170,21 @@
                                         <form class="booking-form" method="post" style="width:80%">
                                             {% csrf_token %}
                                                 <div class="hero-content" style="padding:0px 0px 15px 0px;  font-size:35px; color: black;">
-                                                    Create a tournament
+                                                    Create a Tournament
                                                 </div>
                                             {% for field in tornamentFourm %}
-                                            <div class="form-group form-input">
-                                                <span class="form-label">{{ field.label_tag }}</span><br>
-                                                {% if field.name == 'start_date' or field.name ==  'end_date' %}
-                                                        (mm/dd/yy)<br>
-                                                {% endif %}
+                                            <div class="group">
+                                                <span class="form-label">{{ field.label_tag }}</span><br><br>
                                                 {{ field }}
-                                                <span class="focus-input100"></span>
+                                                <span class="bar"></span>
                                             </div>
                                             {% for error in field.errors %}
                                               <p style="font-size: 15px; color: red">{{ error }}</p>
                                             {% endfor %}
                                             {% endfor %}
                                             <br>
-                                            <div class="form-submit"  style="padding-left: 110px">
-                                                    <input type="submit" value="Create" class="submit" id="submit" name="submit"/>
+                                            <div class="form-submit">
+                                                    <center><input type="submit" value="Create" class="submit" id="submit" name="submit"/></center>
                                             </div>
                                         </form>
                                         </div>

@@ -87,11 +87,13 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'sportshub',
         'USER': 'root',
-        'PASSWORD': 'mysqlroot',
+        'PASSWORD': 'snowysatish1248',
         'HOST': 'localhost',
         'PORT': '',
     }
 }
+
+LOGIN_REDIRECT_URL = 'user_auth:login'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
