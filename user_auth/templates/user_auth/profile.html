@@ -5,7 +5,7 @@
 
 {% block register %}
 <body>
-<div class="main">
+<div class="main" style="padding-top: 180px">
     <div class="container" >
         <div class="booking-content">
             <div class="booking-form">
@@ -33,13 +33,10 @@
             {% endfor %}
                 {% endfor %}
 
-            {% endif %}
+            {% endif %}<br>
             <div class="form-submit">
-                            <input type="submit" value="Update" class="submit" id="submit" name="submit" />
-                        <a href="{% url 'user_auth:logout_user' %}">
-                    Log out
-                </a>
-                    </div>
+                <input type="submit" value="Update" class="submit" id="submit" name="submit" />
+            </div>
         </form>
         </div>
         </div>
