@@ -1,19 +1,23 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from sports.models import Tournaments, CoachingCenters
+from rest_framework import status
+from rest_framework.response import Response
+
+from sports.models import Tournaments, CoachingCenters, TournamentJoin
 from news.models import LastNewsUpdate, HeadLine
-from sports.forms import FavoriteSports, TournamentRegistration, CoachingCenterRegistration
+from sports.forms import FavoriteSports, TournamentRegistration, CoachingCenterRegistration, TournamentJoinForm
 from django.urls import reverse
 from news.views import scrape
 from datetime import datetime
 import time
 
+from rest_framework.decorators import api_view
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
-from sports.serializers import TournamentSerializer
+from sports.serializers import TournamentSerializer, JoinTournamentSerializer
 
 
 def homepage(request):
@@ -60,9 +64,15 @@ def tournament_list(request):
     if request.user.is_authenticated:
         user = User.objects.get(pk=request.user.pk)
         user_tournaments = Tournaments.objects.filter(user=user)
+        join = TournamentJoin.objects.filter(user=user)
+        joined_pk = []
+        for i in join:
+            joined_pk.append(i.tournament.pk)
+        tournaments = Tournaments.objects.exclude(pk__in=joined_pk)
+        join_tornamnets = Tournaments.objects.filter(pk__in=joined_pk)
         return render(request, 'sports/tournament_list.html',
                       {'Tournaments': tournaments, 'tornamentFourm': tournamentForm,
-                       'User_Tournaments': user_tournaments})
+                       'User_Tournaments': user_tournaments, 'joined_tournaments': join_tornamnets})
     return render(request, 'sports/tournament_list.html',
                   {'Tournaments': tournaments, 'tornamentFourm': tournamentForm})
 
@@ -113,49 +123,59 @@ def delete_coaching_centers(request, c_id):
     return HttpResponseRedirect(reverse('sports:coaching_centers_list'))
 
 
-@csrf_exempt
+@api_view(['GET'])
 def tournamentsList(request):
     if request.method == 'GET':
         snippets = Tournaments.objects.all()
         serializer = TournamentSerializer(snippets, many=True)
         return JsonResponse(serializer.data, safe=False)
 
-    elif request.method == 'POST':
+
+
+@api_view(['POST'])
+def tournamentsJoin(request):
+    if request.method == 'POST':
         data = JSONParser().parse(request)
-        u = User.objects.get(username=data['user'])
-        data['user'] = u.pk
-        print(data['user'])
-        serializer = TournamentSerializer(data=data)
+        # t = Tournaments.objects.get(name=data['tournament'])
+        # data['tournament'] = t.pk
+
+        # tournament = get_object_or_404(Tournaments, title=request.data.get('tournament'))
+
+        serializer = JoinTournamentSerializer(data=data)
         print(data)
         if serializer.is_valid():
+            print('User Joined')
             serializer.save()
-            return JsonResponse(serializer.data, status=201)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         print(serializer.errors)
-        return JsonResponse(serializer.errors, status=400)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@csrf_exempt
-def tournament_detail(request, pk):
-    try:
-        snippet = Tournaments.objects.get(pk=pk)
-    except Tournaments.DoesNotExist:
-        return HttpResponse(status=404)
+def join_Tournament(request, t_id):
+    joinForm = TournamentJoinForm()
+    if t_id:
+        tourna = Tournaments.objects.get(pk=t_id)
+        if request.method == 'POST':
+            joinForm = TournamentJoinForm(request.POST)
+            if joinForm.is_valid():
+                name = joinForm.cleaned_data['name']
+                phone_num = joinForm.cleaned_data['phoneNumber']
+                mail = joinForm.cleaned_data['mail']
 
-    if request.method == 'GET':
-        serializer = TournamentSerializer(snippet)
-        # details = serializer.data
-        # print(details['name'])
-        return JsonResponse(serializer.data)
+                if request.user.is_authenticated:
+                    user = User.objects.get(pk=request.user.pk)
+                    TournamentJoin.objects.create(user=user, tournament=tourna, name=name, mail=mail,
+                                                  phoneNumber=phone_num)
+                else:
+                    TournamentJoin.objects.create(tournament=tourna, name=name, mail=mail, phoneNumber=phone_num)
+                return HttpResponseRedirect(reverse('sports:tournament_list'))
+        return render(request, 'sports/join_tournament.html', {'joinform': joinForm, 'tournament': tourna})
 
-    elif request.method == 'PUT':
-        data = JSONParser().parse(request)
-        # print(data['name'])
-        serializer = TournamentSerializer(snippet, data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data)
-        return JsonResponse(serializer.errors, status=400)
 
-    elif request.method == 'DELETE':
-        snippet.delete()
-        return HttpResponse(status=204)
+def leave_Tournament(request, t_id):
+    if t_id:
+        if request.user.is_authenticated:
+            user = User.objects.get(pk=request.user.pk)
+            joined_tournament = TournamentJoin.objects.get(user=user, tournament_id=t_id)
+            joined_tournament.delete()
+    return HttpResponseRedirect(reverse('sports:tournament_list'))

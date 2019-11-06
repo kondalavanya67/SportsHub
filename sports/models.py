@@ -45,3 +45,14 @@ class CoachingCenters(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class TournamentJoin(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    tournament = models.ForeignKey(Tournaments, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100, blank=False, null=False)
+    mail = models.EmailField(blank=False, null=False)
+    phoneNumber = models.BigIntegerField(blank=True, null=True)
+
+    def __str__(self):
+        return self.name
