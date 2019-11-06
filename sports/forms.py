@@ -1,5 +1,5 @@
 from django import forms
-from sports.models import Sport_Info, Tournaments, CoachingCenters
+from sports.models import Sport_Info, Tournaments, CoachingCenters, TournamentJoin
 
 
 class FavoriteSports(forms.ModelForm):
@@ -18,3 +18,9 @@ class CoachingCenterRegistration(forms.ModelForm):
     class Meta:
         model = CoachingCenters
         fields = ['name', 'description', 'address']
+
+
+class TournamentJoinForm(forms.ModelForm):
+    class Meta:
+        model = TournamentJoin
+        fields = ['name', 'mail', 'phoneNumber']

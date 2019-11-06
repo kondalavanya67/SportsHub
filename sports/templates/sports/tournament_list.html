@@ -30,7 +30,11 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link" id="tab2" data-toggle="tab" href="#world-tab-3" role="tab" aria-controls="world-tab-3" aria-selected="false">Create a tournament <img src="https://img.icons8.com/material-sharp/14/000000/plus-math.png"></a>
+                                    <a class="nav-link" id="tab3" data-toggle="tab" href="#world-tab-3" role="tab" aria-controls="world-tab-3" aria-selected="false">Joined tournaments</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab4" data-toggle="tab" href="#world-tab-4" role="tab" aria-controls="world-tab-4" aria-selected="false">Create a tournament <img src="https://img.icons8.com/material-sharp/14/000000/plus-math.png"></a>
                                 </li>
                                 {% endif %}
                             </ul>
@@ -58,7 +62,9 @@
                                                         <p>Location : <span style="font-weight: bold">{{ item.location }}</span><br>
                                                             Time: <span style="font-weight: bold">{{ item.start_date }} to {{ item.end_date }}</span></p>
                                                     </div>
-
+                                                    {% if user.is_authenticated %}
+                                                    <a href={% url 'sports:join_tournament' item.pk %}><button class="btn btn-primary">Join</button></a>
+                                                    {% endif %}
                                                 </div>
                                             </div>
                                             </div>
@@ -113,7 +119,47 @@
                                     </div>
                                 </div>
 
+
                                 <div class="tab-pane fade" id="world-tab-3" role="tabpanel" aria-labelledby="tab3">
+                                        <div class="hero-content" style="padding:0px 0px 20px 0px;  font-size:35px; color: black;">
+                                            Joined Tournaments
+                                        </div><br>
+                                    <div class="row">
+                                        {% if joined_tournaments %}
+                                        {% for item in joined_tournaments %}
+                                            <div class="col-12 col-md-6" style="padding-bottom: 10px">
+                                            <div class="single-blog-post post-style-2 d-flex align-items-center wow fadeInUpBig">
+                                                <!-- Post Thumbnail -->
+                                                <div class="post-thumbnail" style="min-width:170px">
+                                                    <img src="{% static "news/img/default1.png" %}">
+                                                </div>
+
+                                                <!-- Post Content -->
+                                                <div class="post-content">
+
+                                                    <h5 class="text-wrap-headline"> {{ item.name }}</h5>
+                                                    <p>{{ item.description }}</p>
+                                                    <!-- Post Meta -->
+                                                    <div class="text-wrap-headline">
+                                                        <p>Location : <span style="font-weight: bold">{{ item.location }}</span><br>
+                                                            Time: <span style="font-weight: bold">{{ item.start_date }} to {{ item.end_date }}</span></p>
+                                                    </div>
+                                                    <a href={% url 'sports:leave_tournament' item.pk %}><button class="btn btn-primary">Leave</button></a>
+                                                </div>
+                                            </div>
+                                            </div>
+
+                                        {% endfor %}
+                                        {% else %}
+                                            <i>Oops!!, No Tournaments to show.</i>
+                                        {% endif %}
+
+                                    </div>
+                                </div>
+
+
+
+                                <div class="tab-pane fade" id="world-tab-4" role="tabpanel" aria-labelledby="tab4">
                                     <div class="row">
                                         <div class="col-12 col-md-12">
                                         <form class="booking-form" method="post" style="width:80%">
