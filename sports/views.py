@@ -9,7 +9,7 @@ from sports.models import Tournaments, CoachingCenters, TournamentJoin
 from news.models import LastNewsUpdate, HeadLine
 from sports.forms import FavoriteSports, TournamentRegistration, CoachingCenterRegistration, TournamentJoinForm
 from django.urls import reverse
-from news.views import scrape
+from news.views import scrape, scrape_all_sports
 from datetime import datetime
 import time
 
@@ -26,12 +26,14 @@ def homepage(request):
     if len(last_update) == 0:
         print("oops")
         scrape()
+        scrape_all_sports()
         LastNewsUpdate.objects.create(last_update=datetime.now())
     else:
         d1_ts = time.mktime(last_update[0].last_update.timetuple())
         d2_ts = time.mktime(now.timetuple())
         if (int(d2_ts - d1_ts) / 60) > 30:
             scrape()
+            scrape_all_sports()
             LastNewsUpdate.objects.all().delete()
             LastNewsUpdate.objects.create(last_update=datetime.now())
     news = HeadLine.objects.filter(category="sports")
@@ -97,9 +99,14 @@ def coaching_centers_list(request):
             user = User.objects.get(pk=request.user.pk)
             name = form.cleaned_data['name']
             des = form.cleaned_data['description']
-            add = form.cleaned_data['address']
+            street = form.cleaned_data['street_name']
+            state = form.cleaned_data['state']
+            pincode = form.cleaned_data['pincode']
+            contact = form.cleaned_data['phone_num']
+            area = form.cleaned_data['area']
+            email = form.cleaned_data['mail']
             CoachingCenters.objects.create(name=name, description=des,
-                                           address=add, user=user)
+                                           user=user, mail=email, phone_num=contact, pincode=pincode, state=state, street_name=street, area=area)
     coaching_centers = CoachingCenters.objects.all()
     if request.user.is_authenticated:
         user = User.objects.get(pk=request.user.pk)
@@ -166,8 +173,12 @@ def join_Tournament(request, t_id):
                     user = User.objects.get(pk=request.user.pk)
                     TournamentJoin.objects.create(user=user, tournament=tourna, name=name, mail=mail,
                                                   phoneNumber=phone_num)
+                    tourna.no_of_joined += 1
+                    tourna.save()
                 else:
                     TournamentJoin.objects.create(tournament=tourna, name=name, mail=mail, phoneNumber=phone_num)
+                    tourna.no_of_joined += 1
+                    tourna.save()
                 return HttpResponseRedirect(reverse('sports:tournament_list'))
         return render(request, 'sports/join_tournament.html', {'joinform': joinForm, 'tournament': tourna})
 
@@ -178,4 +189,7 @@ def leave_Tournament(request, t_id):
             user = User.objects.get(pk=request.user.pk)
             joined_tournament = TournamentJoin.objects.get(user=user, tournament_id=t_id)
             joined_tournament.delete()
+            tournament = Tournaments.objects.get(pk=t_id)
+            tournament.no_of_joined -= 1
+            tournament.save()
     return HttpResponseRedirect(reverse('sports:tournament_list'))
