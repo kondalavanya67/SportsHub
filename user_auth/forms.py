@@ -6,11 +6,17 @@ from user_auth.models import Profile
 
 class RegisterForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
-    password1 = forms.CharField(widget=forms.PasswordInput())
+    confirm_password = forms.CharField(widget=forms.PasswordInput())
 
     class Meta:
         model = User
         fields = ('username', 'email', 'first_name', 'last_name')
+        labels = {
+            'username': 'Username',
+            'email': 'E-mail',
+            'first_name': 'First Name',
+            'last_name': 'Last Name'
+        }
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
@@ -28,7 +34,7 @@ class RegisterForm(forms.ModelForm):
 
     def clean_password1(self):
         password = self.cleaned_data.get('password')
-        password1 = self.cleaned_data.get('password1')
+        password1 = self.cleaned_data.get('confirm_password')
         if password != password1:
             raise forms.ValidationError("Passwords do not match!")
         return password1
@@ -44,3 +50,7 @@ class UpdateProfile(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'email']
+        labels = {
+            'username': 'Username',
+            'email': 'E-mail'
+        }

@@ -32,6 +32,7 @@ class Tournaments(models.Model):
     location = models.CharField(max_length=1000)
     start_date = models.DateField()
     end_date = models.DateField()
+    no_of_joined = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
@@ -41,7 +42,12 @@ class CoachingCenters(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, null=False)
     description = models.TextField(max_length=1000)
-    address = models.CharField(max_length=1000)
+    street_name = models.CharField(max_length=100)
+    area = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+    pincode = models.PositiveIntegerField()
+    phone_num = models.BigIntegerField()
+    mail = models.EmailField(blank=True, null=True)
 
     def __str__(self):
         return self.name
