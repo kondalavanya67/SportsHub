@@ -1,7 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from rest_framework import status
+from rest_framework.response import Response
+
 from sports.models import Tournaments, CoachingCenters, TournamentJoin
 from news.models import LastNewsUpdate, HeadLine
 from sports.forms import FavoriteSports, TournamentRegistration, CoachingCenterRegistration, TournamentJoinForm
@@ -9,6 +12,12 @@ from django.urls import reverse
 from news.views import scrape
 from datetime import datetime
 import time
+
+from rest_framework.decorators import api_view
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.parsers import JSONParser
+from sports.serializers import TournamentSerializer, JoinTournamentSerializer
 
 
 def homepage(request):
@@ -112,6 +121,34 @@ def delete_coaching_centers(request, c_id):
         except:
             pass
     return HttpResponseRedirect(reverse('sports:coaching_centers_list'))
+
+
+@api_view(['GET'])
+def tournamentsList(request):
+    if request.method == 'GET':
+        snippets = Tournaments.objects.all()
+        serializer = TournamentSerializer(snippets, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+
+
+@api_view(['POST'])
+def tournamentsJoin(request):
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        # t = Tournaments.objects.get(name=data['tournament'])
+        # data['tournament'] = t.pk
+
+        # tournament = get_object_or_404(Tournaments, title=request.data.get('tournament'))
+
+        serializer = JoinTournamentSerializer(data=data)
+        print(data)
+        if serializer.is_valid():
+            print('User Joined')
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        print(serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 def join_Tournament(request, t_id):
