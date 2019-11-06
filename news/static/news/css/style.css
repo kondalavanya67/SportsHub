@@ -408,7 +408,7 @@ img {
 }
 
 .hero-content-pages {
-  padding: 120px 0px 70px 250px;
+  padding: 120px 0px 70px 230px;
   text-align:left;
   font-family:mountains;
   font-size: 60px;
@@ -1110,7 +1110,7 @@ input:-moz-placeholder {
 .group {
   position: relative;
   z-index: 1;
-  margin-bottom: 30px; }
+  margin-bottom: 25px; }
   .group input,
   .group textarea {
     font-size: 14px;
@@ -1120,7 +1120,7 @@ input:-moz-placeholder {
     height: 35px;
     border: none;
     border-bottom: 2px solid;
-    border-color: #f1f1f1; }
+    border-color: #e6e6e6; }
     .group input:focus,
     .group textarea:focus {
       outline: none;
@@ -1129,7 +1129,7 @@ input:-moz-placeholder {
     color: #8d8d8d;
     font-size: 14px;
     font-weight: normal;
-    position: absolute;
+    position: relative;
     pointer-events: none;
     left: 0;
     top: 5px;
