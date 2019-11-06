@@ -2,9 +2,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-from sports.models import Tournaments, CoachingCenters
+from sports.models import Tournaments, CoachingCenters, TournamentJoin
 from news.models import LastNewsUpdate, HeadLine
-from sports.forms import FavoriteSports, TournamentRegistration, CoachingCenterRegistration
+from sports.forms import FavoriteSports, TournamentRegistration, CoachingCenterRegistration, TournamentJoinForm
 from django.urls import reverse
 from news.views import scrape
 from datetime import datetime
@@ -38,22 +38,6 @@ def homepage(request):
                    'blog_2': blog_2})
 
 
-def choose_favorite_sports(request):
-    favorites = FavoriteSports()
-    all_sports = Sport.objects.all()
-    if request.method == 'POST':
-        favorites = FavoriteSports(request.POST)
-        user = request.user
-        print(user)
-        sport = Sport.objects.create(user=user, name=favorites.cleaned_data['name'])
-        sport.save()
-        print('Sved')
-        return HttpResponse('Form saved')
-
-    print('rendering....')
-    return render(request, 'sports/choose_favorites.html', {'sports': all_sports})
-
-
 def tournament_list(request):
     tournaments = Tournaments.objects.all()
     tournamentForm = TournamentRegistration()
@@ -71,9 +55,15 @@ def tournament_list(request):
     if request.user.is_authenticated:
         user = User.objects.get(pk=request.user.pk)
         user_tournaments = Tournaments.objects.filter(user=user)
+        join = TournamentJoin.objects.filter(user=user)
+        joined_pk = []
+        for i in join:
+            joined_pk.append(i.tournament.pk)
+        tournaments = Tournaments.objects.exclude(pk__in=joined_pk)
+        join_tornamnets = Tournaments.objects.filter(pk__in=joined_pk)
         return render(request, 'sports/tournament_list.html',
                       {'Tournaments': tournaments, 'tornamentFourm': tournamentForm,
-                       'User_Tournaments': user_tournaments})
+                       'User_Tournaments': user_tournaments, 'joined_tournaments': join_tornamnets})
     return render(request, 'sports/tournament_list.html',
                   {'Tournaments': tournaments, 'tornamentFourm': tournamentForm})
 
@@ -122,3 +112,33 @@ def delete_coaching_centers(request, c_id):
         except:
             pass
     return HttpResponseRedirect(reverse('sports:coaching_centers_list'))
+
+
+def join_Tournament(request, t_id):
+    joinForm = TournamentJoinForm()
+    if t_id:
+        tourna = Tournaments.objects.get(pk=t_id)
+        if request.method == 'POST':
+            joinForm = TournamentJoinForm(request.POST)
+            if joinForm.is_valid():
+                name = joinForm.cleaned_data['name']
+                phone_num = joinForm.cleaned_data['phoneNumber']
+                mail = joinForm.cleaned_data['mail']
+
+                if request.user.is_authenticated:
+                    user = User.objects.get(pk=request.user.pk)
+                    TournamentJoin.objects.create(user=user, tournament=tourna, name=name, mail=mail,
+                                                  phoneNumber=phone_num)
+                else:
+                    TournamentJoin.objects.create(tournament=tourna, name=name, mail=mail, phoneNumber=phone_num)
+                return HttpResponseRedirect(reverse('sports:tournament_list'))
+        return render(request, 'sports/join_tournament.html', {'joinform': joinForm, 'tournament': tourna})
+
+
+def leave_Tournament(request, t_id):
+    if t_id:
+        if request.user.is_authenticated:
+            user = User.objects.get(pk=request.user.pk)
+            joined_tournament = TournamentJoin.objects.get(user=user, tournament_id=t_id)
+            joined_tournament.delete()
+    return HttpResponseRedirect(reverse('sports:tournament_list'))
