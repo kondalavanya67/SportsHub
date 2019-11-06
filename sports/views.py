@@ -10,6 +10,11 @@ from news.views import scrape
 from datetime import datetime
 import time
 
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.parsers import JSONParser
+from sports.serializers import TournamentSerializer
+
 
 def homepage(request):
     now = datetime.now()
@@ -36,22 +41,6 @@ def homepage(request):
     return render(request, 'sports/homepage.html',
                   {'slider_1': slider_1, 'slider_2': slider_2, 'slider_3': slider_3, 'blog_1': blog_1,
                    'blog_2': blog_2})
-
-
-def choose_favorite_sports(request):
-    favorites = FavoriteSports()
-    all_sports = Sport.objects.all()
-    if request.method == 'POST':
-        favorites = FavoriteSports(request.POST)
-        user = request.user
-        print(user)
-        sport = Sport.objects.create(user=user, name=favorites.cleaned_data['name'])
-        sport.save()
-        print('Sved')
-        return HttpResponse('Form saved')
-
-    print('rendering....')
-    return render(request, 'sports/choose_favorites.html', {'sports': all_sports})
 
 
 def tournament_list(request):
@@ -122,3 +111,51 @@ def delete_coaching_centers(request, c_id):
         except:
             pass
     return HttpResponseRedirect(reverse('sports:coaching_centers_list'))
+
+
+@csrf_exempt
+def tournamentsList(request):
+    if request.method == 'GET':
+        snippets = Tournaments.objects.all()
+        serializer = TournamentSerializer(snippets, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+    elif request.method == 'POST':
+        data = JSONParser().parse(request)
+        u = User.objects.get(username=data['user'])
+        data['user'] = u.pk
+        print(data['user'])
+        serializer = TournamentSerializer(data=data)
+        print(data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        print(serializer.errors)
+        return JsonResponse(serializer.errors, status=400)
+
+
+@csrf_exempt
+def tournament_detail(request, pk):
+    try:
+        snippet = Tournaments.objects.get(pk=pk)
+    except Tournaments.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == 'GET':
+        serializer = TournamentSerializer(snippet)
+        # details = serializer.data
+        # print(details['name'])
+        return JsonResponse(serializer.data)
+
+    elif request.method == 'PUT':
+        data = JSONParser().parse(request)
+        # print(data['name'])
+        serializer = TournamentSerializer(snippet, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data)
+        return JsonResponse(serializer.errors, status=400)
+
+    elif request.method == 'DELETE':
+        snippet.delete()
+        return HttpResponse(status=204)
