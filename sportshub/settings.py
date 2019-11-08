@@ -37,9 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user_auth',
     'sports',
+    'mathfilters',
     'bootstrapform',
     'widget_tweaks',
-    'news'
+    'shopping',
+    'news',
+    'cart',
 ]
 
 MIDDLEWARE = [
@@ -87,7 +90,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'sportshub',
         'USER': 'root',
-        'PASSWORD': 'snowysatish1248',
+        'PASSWORD': 'jitesh123',
         'HOST': 'localhost',
         'PORT': '',
     }

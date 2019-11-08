@@ -1,0 +1,153 @@
+{% extends 'shopping/base.html' %}
+{% load static %}
+
+{% block scripts %}
+    <script>
+        $(".cart-add").click(function () {
+            let span = $(this).parent();
+            var vendorid = parseInt(document.getElementById("select_vendor").value)
+            console.log(vendorid)
+            $.ajax({
+                url: span.attr("add_url"),
+                data: {vendorid: vendorid},
+                {#success: function (response) {#}
+                {#    console.log("finished", response);},#}
+                {#error: function (xhr, textStatus, errorThrown) {#}
+                {#    $.ajax({#}
+                {#        url: '/customer/authentication/login/',#}
+                {#        data:{vendorid:vendorid,next:span.attr("add_url"),nextto:span.attr("nextto")}#}
+                {#    })}#}
+
+            });
+            {#            {% if user.is_authenticated %}#}
+            {#                $(this).remove();#}
+            {#                $(span).append($('<a/>')#}
+            {#                    .attr('href', "{% url 'cart:order_summary'%}")#}
+            {#                    .attr('style', "background-color: #84C639;color:white;font-weight:bold;")#}
+            {#                    .addClass("btn btn-warning")#}
+            {#                    .text("Go to Cart"));#}
+            {#            {% else %}#}
+            {#                window.location.replace('/customer/authentication/login/?next=' + span.attr("add_url") + '&nextto=' + span.attr("nextto") + '&vendorid=' + vendorid)#}
+            {#            {% endif %}#}
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <br>
+    <div style="font-size: large;">
+        <div class="collapse navbar-collapse" id="bs-megadropdown-tabs" style="width:20%;float: left;">
+            <ul class="nav navbar-nav nav_1">
+                {% for cat in categories %}
+                    <li><a href={% url 'shopping:items' cat.id %}><h3>{{ cat.cat_name }}</h3></a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div style="padding-left:15%;margin-left:10%;">
+            <h2 style="color:#FA1818;">{{ prod.prod_name }}</h2>
+            <div style="display:inline-block;float:left;width:30%;padding-top: 4%;">
+                {% if prod.prod_pic %}
+                    <img src="{{ prod.prod_pic.url }}" width="300" height="300">
+                {% endif %}
+            </div>
+            <div style="display: inline-block; width:60%;padding:8%;">
+                <div style="font-size: large;">
+                    Category:<b>{{ prod.category.cat_name }}</b><br><br>
+                    {#                    <li>Stock: <b>{{ prod.stock }}</b></li>#}
+                    Price: <b>{{ prod.cost }}</b><br><br>
+                    {% if prod.brand|length > 0 %}
+                        Brand: <b>{{ prod.brand }}</b><br><br>
+                    {% endif %}
+                    <br><br>
+                    {#                    Choose your vendor&nbsp;#}
+                    {#                    <select id="select_vendor">#}
+                    {#                        {% for vendor in vendors %}#}
+                    {#                            <option value="{{ vendor.id }}">{{ vendor.Vendor }}</option>#}
+                    {#                        {% endfor %}#}
+                    {#                    </select>#}
+                </div>
+                {#                {% if prod in current_order_products %}#}
+                {#                    <br><br>#}
+                {#                    <a class="btn btn-warning" href="{% url 'shopping:review'  cat.id prod.id %}"#}
+                {#                       style="background-color: #FA1818;color:white;"><b>Write a review</b></a>#}
+                {#                    <a class="btn btn-warning cart-add" href="{% url 'cart:order_summary' %}"#}
+                {#                       style="background-color: #84C639;color:white;"><b>Go to Cart</b></a>#}
+                {#                {% else %}#}
+                <span id="prod_{{ prod.id }}" nextto="{% url 'shopping:items' cat.id %}"
+                      add_url="{% url 'cart:add_to_cart' prod.id %}">
+                    <br><br>
+                    <a class="btn btn-warning" href="{% url 'shopping:review'  cat.id prod.id %}"
+                       style="background-color: #FA1818;color:white;"><b>Write a review</b></a>
+                    <a class="btn btn-warning cart-add"
+                       style="background-color: #84C639;color:white;" href="{% url 'cart:add_to_cart' prod.id %}"><b>Add to Cart</b></a>
+{##}
+{#                {% endif %}#}
+{#                </span>#}
+{##}
+{#            </div>#}
+{#            <br>#}
+                        <div style="margin-bottom:4%;">
+                            <br>
+                            <h3 style="color:#FA1818;">Top Reviews:</h3>
+                            <br>
+                            <div style="padding-left: 4%;border: ">
+                                <a name="review">
+                                    {% for review in prod.review_set.all %}
+                                        <p>{{ review.content }}</p>
+                                        <div class="star-rating">
+                                            <input id="star-5_{{ review.pk }}" type="radio"
+                                                   name="ratingnew_{{ review.pk }}"
+                                                   value="5"
+                                                   checked
+                                                   disabled>
+                                            <label for="star-5_{{ review.pk }}" title="5 stars">
+                                                <i class="active fa fa-star" aria-hidden="true"></i>
+                                            </label>
+
+                                            <input id="star-4_{{ review.pk }}" type="radio"
+                                                   name="ratingnew_{{ review.pk }}"
+                                                   value="5"
+                                                   checked
+                                                   disabled>
+                                            <label for="star-4_{{ review.pk }}" title="5 stars">
+                                                <i class="active fa fa-star" aria-hidden="true"></i>
+                                            </label>
+                                            <input id="star-3_{{ review.pk }}" type="radio"
+                                                   name="ratingnew_{{ review.pk }}"
+                                                   value="5"
+                                                   checked
+                                                   disabled>
+                                            <label for="star-3_{{ review.pk }}" title="5 stars">
+                                                <i class="active fa fa-star" aria-hidden="true"></i>
+                                            </label>
+                                            <input id="star-2_{{ review.pk }}" type="radio"
+                                                   name="ratingnew_{{ review.pk }}"
+                                                   value="5"
+                                                   checked
+                                                   disabled>
+                                            <label for="star-2_{{ review.pk }}" title="5 stars">
+                                                <i class="active fa fa-star" aria-hidden="true"></i>
+                                            </label>
+                                            <input id="star-1_{{ review.pk }}" type="radio"
+                                                   name="ratingnew_{{ review.pk }}"
+                                                   value="5"
+                                                   checked
+                                                   disabled>
+                                            <label for="star-1_{{ review.pk }}" title="5 stars">
+                                                <i class="active fa fa-star" aria-hidden="true"></i>
+                                            </label>
+                                            <script>
+                                                console.log($('input[name="ratingnew_{{ review.pk }}"]:radio'));
+                                                $($('input[name="ratingnew_{{ review.pk }}"]:radio')[5 -{{ review.rating }}])
+                                                    .prop("checked", true);
+                                            </script>
+                                        </div>
+                                        <footer class="blockquote-footer">by <cite>{{ review.customer }}</cite></footer>
+                                        <br>
+                                    {% endfor %}
+                                </a>
+                            </div>
+                        </div>
+            </div>
+        </div>
+{% endblock %}
