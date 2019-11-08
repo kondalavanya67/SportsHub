@@ -8,8 +8,8 @@ class HeadLine(models.Model):
     title = models.CharField(max_length=1000)
     image_url = models.TextField()
     url = models.TextField()
-    site = models.TextField(default="asdf")
-    time = models.TextField(default="wow")
+    site = models.TextField(null=True)
+    time = models.TextField(null=True)
     category = models.CharField(max_length=1000, null=True)
 
     def __str__(self):

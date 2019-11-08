@@ -31,7 +31,7 @@ class Tournaments(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, null=False)
     description = models.TextField(max_length=1000)
-    location = models.CharField(max_length=1000)
+    location = models.CharField(max_length=100)
     start_date = models.DateField()
     end_date = models.DateField()
     no_of_joined = models.IntegerField(default=0)

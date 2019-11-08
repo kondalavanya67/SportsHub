@@ -24,7 +24,6 @@ def homepage(request):
     now = datetime.now()
     last_update = LastNewsUpdate.objects.all()
     if len(last_update) == 0:
-        print("oops")
         scrape()
         scrape_all_sports()
         LastNewsUpdate.objects.create(last_update=datetime.now())
