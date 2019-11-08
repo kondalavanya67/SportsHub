@@ -5,6 +5,8 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', include('sports.urls')),
+    path('cart/', include('cart.urls')),
+    path('shopping/', include('shopping.urls')),
     path('user_auth/', include('user_auth.urls')),
     path('news/', include('news.urls')),
     path('admin/', admin.site.urls),
@@ -22,6 +24,6 @@ urlpatterns = [
          auth_views.PasswordResetCompleteView.as_view(template_name='registration/reset_password_complete.html'),
          name='password_reset_complete'),
 
-    path('api/', include('sports.urls'))
+    # path('api/', include('sports.urls'))
 
 ]
