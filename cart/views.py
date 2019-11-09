@@ -60,11 +60,11 @@ def add_to_cart(request, prod_id):
         user_order.items.add(order_item)
         user_order.save()
 
-    if request.GET:
-        nextto = request.GET["nextto"]
-        return redirect(nextto)
-    else:
-        return redirect('cart:order_summary')
+    # if request.GET:
+    #     nextto = request.GET["nextto"]
+    #     return redirect(nextto)
+
+    return redirect('cart:order_summary')
 
 
 @login_required
