@@ -93,7 +93,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'sportshub',
         'USER': 'root',
-        'PASSWORD': 'lavanya',
+        'PASSWORD': 'mysqlroot',
         'HOST': 'localhost',
         'PORT': '',
     }
@@ -136,6 +136,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 PAYPAL_RECEIVER_EMAIL = 'manojmanyala@gmail.com'
 PAYPAL_TEST = True

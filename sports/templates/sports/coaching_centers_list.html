@@ -48,7 +48,11 @@
                                             <div class="single-blog-post post-style-2 d-flex align-items-center wow fadeInUpBig">
                                                 <!-- Post Thumbnail -->
                                                 <div class="post-thumbnail" style="min-width:170px">
-                                                    <img src="{% static "news/img/default1.png" %}">
+                                                    {% if item.image %}
+                                                        <img src="{% static item.image.path %}" alt="None">
+                                                        {% else %}
+                                                        <img src="{% static "news/img/default1.png" %}">
+                                                    {% endif %}
                                                 </div>
 
                                                 <!-- Post Content -->
@@ -90,7 +94,11 @@
                                             <div class="single-blog-post post-style-2 d-flex align-items-center wow fadeInUpBig">
                                                 <!-- Post Thumbnail -->
                                                 <div class="post-thumbnail" style="min-width:170px">
-                                                    <img src="{% static "news/img/default1.png" %}">
+                                                    {% if item.image %}
+                                                        <img src="{% static item.image.path %}" alt="None">
+                                                        {% else %}
+                                                        <img src="{% static "news/img/default1.png" %}">
+                                                    {% endif %}
                                                 </div>
 
                                                 <!-- Post Content -->
@@ -132,7 +140,7 @@
                                 <div class="tab-pane fade" id="world-tab-3" role="tabpanel" aria-labelledby="tab3">
                                     <div class="row">
                                         <div class="col-12 col-md-12">
-                                        <form class="booking-form" method="post" style="width:80%">
+                                        <form class="booking-form" method="post" enctype="multipart/form-data" style="width:80%">
                                             {% csrf_token %}
                                                 <div class="hero-content" style="padding:0px 0px 20px 0px; font-size:35px; color: black;">
                                                     Create a Coaching Center
