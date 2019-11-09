@@ -24,6 +24,7 @@ def homepage(request):
     now = datetime.now()
     last_update = LastNewsUpdate.objects.all()
     if len(last_update) == 0:
+        print("oops")
         scrape()
         scrape_all_sports()
         LastNewsUpdate.objects.create(last_update=datetime.now())
@@ -46,6 +47,11 @@ def homepage(request):
     return render(request, 'sports/homepage.html',
                   {'slider_1': slider_1, 'slider_2': slider_2, 'slider_3': slider_3, 'blog_1': blog_1,
                    'blog_2': blog_2})
+
+
+def sports_store(request):
+    return render(request,"sports/maps.html",{})
+
 
 
 def tournament_list(request):
