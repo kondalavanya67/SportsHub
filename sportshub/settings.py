@@ -90,7 +90,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'sportshub',
         'USER': 'root',
-        'PASSWORD': 'mysqlroot',
+        'PASSWORD': 'lavanya',
         'HOST': 'localhost',
         'PORT': '',
     }
