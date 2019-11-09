@@ -5,6 +5,8 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', include('sports.urls')),
+    path('paypal/', include('paypal.standard.ipn.urls')),
+    path('payment/', include('payment.urls')),
     path('cart/', include('cart.urls')),
     path('shopping/', include('shopping.urls')),
     path('user_auth/', include('user_auth.urls')),
