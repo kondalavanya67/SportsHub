@@ -5,7 +5,7 @@ from rest_framework import serializers
 class TournamentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tournaments
-        fields = '__all__'
+        fields = ['pk', 'name', 'description', 'location', 'start_date', 'end_date']
 
 
 class JoinTournamentSerializer(serializers.ModelSerializer):

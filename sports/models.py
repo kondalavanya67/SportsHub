@@ -28,6 +28,7 @@ class FavoriteSports(models.Model):
 
 
 class Tournaments(models.Model):
+    image = models.ImageField(upload_to='static/sports/Tournament_Images/', null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, null=False)
     description = models.TextField(max_length=1000)
@@ -41,6 +42,7 @@ class Tournaments(models.Model):
 
 
 class CoachingCenters(models.Model):
+    image = models.ImageField(upload_to='static/sports/Coachingcenters_Images/', null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, null=False)
     description = models.TextField(max_length=1000)

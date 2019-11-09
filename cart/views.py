@@ -11,6 +11,27 @@ import datetime
 from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
+from paypal.standard.forms import PayPalPaymentsForm
+
+
+def make_payment(request):
+    # What you want the button to do.
+    paypal_dict = {
+        "business": "manojmnayala@gmail.com",
+        "amount": "10.00",
+        "item_name": "name of the item",
+        "invoice": "unique-invoice-id",
+        # "notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
+        # "return": request.build_absolute_uri(reverse('your-return-view')),
+        # "cancel_return": request.build_absolute_uri(reverse('your-cancel-view')),
+        "custom": "premium_plan",  # Custom command to correlate to some function later (optional)
+        "currency_code": "INR",
+    }
+
+    # Create the instance.
+    form = PayPalPaymentsForm(initial=paypal_dict)
+    context = {"form": form}
+    return render(request, "cart/payment.html", context)
 
 
 def get_user_pending_order(request):
@@ -97,45 +118,14 @@ def checkout(request, **kwargs):
 
 @login_required
 def update_transaction_records(request):
+
     order_to_purchase = get_user_pending_order(request)
 
+    request.session['order_id'] = order_to_purchase.pk
+    return redirect(reverse('payment:process'))
     # print(order_to_purchase)
 
-    order_to_purchase.is_ordered = True
-    order_to_purchase.date_ordered = datetime.datetime.now()
-    order_to_purchase.save()
 
-    order_items = order_to_purchase.items.all()
-
-    for item in order_items:
-        product = Product.objects.get(prod_name=item.product)
-        product.stock -= item.qty
-        product.save()
-
-    order_items.update(is_ordered=True, date_ordered=datetime.datetime.now())
-
-    u = User.objects.get(pk=request.user.pk)
-    profile = Profile.objects.get(user_name=u)
-    transaction = Transaction(profile=profile,
-                              order_id=order_to_purchase.ref_code,
-                              amount=order_to_purchase.get_cart_total(),
-                              success=True)
-
-    transaction.save()
-    subject = 'Your order has been successfully placed'
-    context = {
-        'ordre': order_to_purchase,
-        'user': request.user,
-        'total': order_to_purchase.get_cart_total(),
-    }
-    html = render_to_string('cart/message.html', context)
-    message = render_to_string('cart/message.html', context)
-    email_from = settings.EMAIL_HOST_USER
-    recipient_list = [request.user.email]
-
-    send_mail(subject, message, email_from, recipient_list, fail_silently=False, html_message=html)
-    messages.info(request, "Thank you! Your purchase was successful!")
-    return redirect(reverse('user_auth:user_profile'))
 
 
 def qtyupdate(request):

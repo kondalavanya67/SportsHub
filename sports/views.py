@@ -24,6 +24,7 @@ def homepage(request):
     now = datetime.now()
     last_update = LastNewsUpdate.objects.all()
     if len(last_update) == 0:
+        print("oops")
         scrape()
         scrape_all_sports()
         LastNewsUpdate.objects.create(last_update=datetime.now())
@@ -48,11 +49,15 @@ def homepage(request):
                    'blog_2': blog_2})
 
 
+def sports_store(request):
+    return render(request, "sports/maps.html", {})
+
+
 def tournament_list(request):
     tournaments = Tournaments.objects.all()
     tournamentForm = TournamentRegistration()
     if request.method == 'POST':
-        form = TournamentRegistration(data=request.POST)
+        form = TournamentRegistration(request.POST, request.FILES)
         if form.is_valid():
             user = User.objects.get(pk=request.user.pk)
             name = form.cleaned_data['name']
@@ -60,8 +65,9 @@ def tournament_list(request):
             s_date = form.cleaned_data['start_date']
             e_date = form.cleaned_data['end_date']
             location = form.cleaned_data['location']
+            img = form.cleaned_data['image']
             Tournaments.objects.create(name=name, description=des, start_date=s_date, end_date=e_date,
-                                       location=location, user=user)
+                                       location=location, user=user, image=img)
     if request.user.is_authenticated:
         user = User.objects.get(pk=request.user.pk)
         user_tournaments = Tournaments.objects.filter(user=user)
@@ -93,7 +99,7 @@ def delete_tournament(request, t_id):
 def coaching_centers_list(request):
     coaching_centersForm = CoachingCenterRegistration()
     if request.method == 'POST':
-        form = CoachingCenterRegistration(data=request.POST)
+        form = CoachingCenterRegistration(request.POST, request.FILES)
         if form.is_valid():
             user = User.objects.get(pk=request.user.pk)
             name = form.cleaned_data['name']
@@ -104,8 +110,11 @@ def coaching_centers_list(request):
             contact = form.cleaned_data['phone_num']
             area = form.cleaned_data['area']
             email = form.cleaned_data['mail']
+            img = form.cleaned_data['image']
+            print(img)
             CoachingCenters.objects.create(name=name, description=des,
-                                           user=user, mail=email, phone_num=contact, pincode=pincode, state=state, street_name=street, area=area)
+                                           user=user, mail=email, phone_num=contact, pincode=pincode, state=state,
+                                           street_name=street, area=area, image=img)
     coaching_centers = CoachingCenters.objects.all()
     if request.user.is_authenticated:
         user = User.objects.get(pk=request.user.pk)
@@ -137,7 +146,6 @@ def tournamentsList(request):
         return JsonResponse(serializer.data, safe=False)
 
 
-
 @api_view(['POST'])
 def tournamentsJoin(request):
     if request.method == 'POST':
@@ -151,6 +159,9 @@ def tournamentsJoin(request):
         print(data)
         if serializer.is_valid():
             print('User Joined')
+            t = Tournaments.objects.get(name=data['tournament'])
+            t.no_of_joined += 1
+            t.save()
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         print(serializer.errors)

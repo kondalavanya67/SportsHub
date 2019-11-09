@@ -12,7 +12,7 @@ urlpatterns = [
     path('delete_tournament/<int:t_id>', views.delete_tournament, name='delete_tournament'),
     path('coaching_centers_list/', views.coaching_centers_list, name='coaching_centers_list'),
     path('delete_coaching_centers/<int:c_id>', views.delete_coaching_centers, name='delete_coaching_centers'),
-
+    path('sports_store/', views.sports_store, name='sports_store'),
     path('tournaments/', views.tournamentsList),
     path('tournaments_join/', views.tournamentsJoin, name='tournaments_join'),
 
