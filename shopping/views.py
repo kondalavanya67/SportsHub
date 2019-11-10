@@ -56,7 +56,7 @@ def itemdetailview(request, pk, ck):
                                                         'prod': prod,
                                                         'current_order_products': current_order_products, })
 
-
+@login_required
 def reviewtext(request, categ, product):
     prod = get_object_or_404(Product, pk=product)
     cat = get_object_or_404(Category, pk=categ)
