@@ -6,7 +6,6 @@ from shopping.forms import writereview
 from .models import Category, Product, Review
 
 
-@login_required
 def list_categories(request):
     categories = Category.objects.all()
     products = Product.objects.all()
@@ -56,6 +55,7 @@ def itemdetailview(request, pk, ck):
                                                         'cat': cat,
                                                         'prod': prod,
                                                         'current_order_products': current_order_products, })
+
 
 def reviewtext(request, categ, product):
     prod = get_object_or_404(Product, pk=product)

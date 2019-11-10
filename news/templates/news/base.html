@@ -8,7 +8,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>SportsHub</title>
+    {% block title %}
+    {% endblock %}
+
     <link rel="stylesheet" href="{% static 'news/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'news/css/animate.css' %}">
     <link rel="stylesheet" href="{% static 'news/css/bootstrap.min.css' %}">
@@ -16,9 +18,6 @@
     <link rel="stylesheet" href="{% static 'news/css/magnific-popup.css' %}">
     <link rel="stylesheet" href="{% static 'news/css/owl.carousel.css' %}">
     <link rel="stylesheet" href="{% static 'news/css/themify-icons.css' %}">
-
-    {% block head %}
-    {% endblock %}
 
     <style>
         a {
@@ -281,9 +280,10 @@
 
 
 {% block content %}
-
 {% endblock %}
 
+{% block user_auth %}
+{% endblock %}
 
 <!-- ***** Footer Area Start ***** -->
 <footer class="footer-area">
