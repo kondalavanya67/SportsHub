@@ -22,6 +22,9 @@ def login_page(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
+            if 'next' in request.GET:
+                return redirect(request.GET['next'])
+
             return redirect('sports:homepage')
 
     return render(request, 'user_auth/login.html', {'form': form})

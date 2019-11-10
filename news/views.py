@@ -23,6 +23,7 @@ def scrape():
         link = i.find_all('a', {'class': 'DY5T1d'})[0]['href']
         link = "https://news.google.com" + link
         title = i.find_all('a', {'class': 'DY5T1d'})[0].text
+        # print(title)
         img = i.find('img', {'class': 'tvs3Id QwxBBf'})['src']
         site = i.find('a', {'class': 'wEwyrc AVN2gc uQIVzc Sksgp'}).text
         try:
@@ -54,6 +55,7 @@ def scrape_all_sports():
             link = i.find_all('a', {'class': 'DY5T1d'})[0]['href']
             link = "https://news.google.com" + link
             title = i.find_all('a', {'class': 'DY5T1d'})[0].text
+            # print(title)`
             img = i.find('img', {'class': 'tvs3Id QwxBBf'})['src']
             site = i.find('a', {'class': 'wEwyrc AVN2gc uQIVzc Sksgp'}).text
             try:
@@ -95,4 +97,3 @@ def news_list(request):
     return render(request, 'news/news_list.html',
                   {'slider_1': slider_1, 'slider_2': slider_2, 'slider_3': slider_3, 'blog_1': blog_1,
                    'blog_2': blog_2})
-

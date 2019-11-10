@@ -14,8 +14,7 @@ from datetime import datetime
 import time
 
 from rest_framework.decorators import api_view
-from django.http import HttpResponse, JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 from rest_framework.parsers import JSONParser
 from sports.serializers import TournamentSerializer, JoinTournamentSerializer
 
