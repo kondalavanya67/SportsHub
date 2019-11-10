@@ -6,8 +6,8 @@ from django_unixdatetimefield import UnixDateTimeField
 
 class HeadLine(models.Model):
     title = models.CharField(max_length=1000)
-    image_url = models.TextField()
-    url = models.TextField()
+    image_url = models.TextField(null=True)
+    url = models.TextField(null=True)
     site = models.TextField(null=True)
     time = models.TextField(null=True)
     category = models.CharField(max_length=1000, null=True)
