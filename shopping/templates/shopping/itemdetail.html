@@ -1,153 +1,109 @@
-{% extends 'shopping/base.html' %}
+{% extends 'news/base.html' %}
 {% load static %}
 
-{% block scripts %}
-    <script>
-        $(".cart-add").click(function () {
-            let span = $(this).parent();
-            var vendorid = parseInt(document.getElementById("select_vendor").value)
-            console.log(vendorid)
-            $.ajax({
-                url: span.attr("add_url"),
-                data: {vendorid: vendorid},
-                {#success: function (response) {#}
-                {#    console.log("finished", response);},#}
-                {#error: function (xhr, textStatus, errorThrown) {#}
-                {#    $.ajax({#}
-                {#        url: '/customer/authentication/login/',#}
-                {#        data:{vendorid:vendorid,next:span.attr("add_url"),nextto:span.attr("nextto")}#}
-                {#    })}#}
-
-            });
-            {#            {% if user.is_authenticated %}#}
-            {#                $(this).remove();#}
-            {#                $(span).append($('<a/>')#}
-            {#                    .attr('href', "{% url 'cart:order_summary'%}")#}
-            {#                    .attr('style', "background-color: #84C639;color:white;font-weight:bold;")#}
-            {#                    .addClass("btn btn-warning")#}
-            {#                    .text("Go to Cart"));#}
-            {#            {% else %}#}
-            {#                window.location.replace('/customer/authentication/login/?next=' + span.attr("add_url") + '&nextto=' + span.attr("nextto") + '&vendorid=' + vendorid)#}
-            {#            {% endif %}#}
-        });
-    </script>
-{% endblock %}
-
 {% block content %}
-    <br>
-    <div style="font-size: large;">
-        <div class="collapse navbar-collapse" id="bs-megadropdown-tabs" style="width:20%;float: left;">
-            <ul class="nav navbar-nav nav_1">
-                {% for cat in categories %}
-                    <li><a href={% url 'shopping:items' cat.id %}><h3>{{ cat.cat_name }}</h3></a></li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div style="padding-left:15%;margin-left:10%;">
-            <h2 style="color:#FA1818;">{{ prod.prod_name }}</h2>
-            <div style="display:inline-block;float:left;width:30%;padding-top: 4%;">
-                {% if prod.prod_pic %}
-                    <img src="{{ prod.prod_pic.url }}" width="300" height="300">
-                {% endif %}
-            </div>
-            <div style="display: inline-block; width:60%;padding:8%;">
-                <div style="font-size: large;">
-                    Category:<b>{{ prod.category.cat_name }}</b><br><br>
-                    {#                    <li>Stock: <b>{{ prod.stock }}</b></li>#}
-                    Price: <b>{{ prod.cost }}</b><br><br>
-                    {% if prod.brand|length > 0 %}
-                        Brand: <b>{{ prod.brand }}</b><br><br>
-                    {% endif %}
-                    <br><br>
-                    {#                    Choose your vendor&nbsp;#}
-                    {#                    <select id="select_vendor">#}
-                    {#                        {% for vendor in vendors %}#}
-                    {#                            <option value="{{ vendor.id }}">{{ vendor.Vendor }}</option>#}
-                    {#                        {% endfor %}#}
-                    {#                    </select>#}
-                </div>
-                {#                {% if prod in current_order_products %}#}
-                {#                    <br><br>#}
-                {#                    <a class="btn btn-warning" href="{% url 'shopping:review'  cat.id prod.id %}"#}
-                {#                       style="background-color: #FA1818;color:white;"><b>Write a review</b></a>#}
-                {#                    <a class="btn btn-warning cart-add" href="{% url 'cart:order_summary' %}"#}
-                {#                       style="background-color: #84C639;color:white;"><b>Go to Cart</b></a>#}
-                {#                {% else %}#}
-                <span id="prod_{{ prod.id }}" nextto="{% url 'shopping:items' cat.id %}"
-                      add_url="{% url 'cart:add_to_cart' prod.id %}">
-                    <br><br>
-                    <a class="btn btn-warning" href="{% url 'shopping:review'  cat.id prod.id %}"
-                       style="background-color: #FA1818;color:white;"><b>Write a review</b></a>
-                    <a class="btn btn-warning cart-add"
-                       style="background-color: #84C639;color:white;" href="{% url 'cart:add_to_cart' prod.id %}"><b>Add to Cart</b></a>
-{##}
-{#                {% endif %}#}
-{#                </span>#}
-{##}
-{#            </div>#}
-{#            <br>#}
-                        <div style="margin-bottom:4%;">
-                            <br>
-                            <h3 style="color:#FA1818;">Top Reviews:</h3>
-                            <br>
-                            <div style="padding-left: 4%;border: ">
-                                <a name="review">
-                                    {% for review in prod.review_set.all %}
-                                        <p>{{ review.content }}</p>
-                                        <div class="star-rating">
-                                            <input id="star-5_{{ review.pk }}" type="radio"
-                                                   name="ratingnew_{{ review.pk }}"
-                                                   value="5"
-                                                   checked
-                                                   disabled>
-                                            <label for="star-5_{{ review.pk }}" title="5 stars">
-                                                <i class="active fa fa-star" aria-hidden="true"></i>
-                                            </label>
 
-                                            <input id="star-4_{{ review.pk }}" type="radio"
-                                                   name="ratingnew_{{ review.pk }}"
-                                                   value="5"
-                                                   checked
-                                                   disabled>
-                                            <label for="star-4_{{ review.pk }}" title="5 stars">
-                                                <i class="active fa fa-star" aria-hidden="true"></i>
-                                            </label>
-                                            <input id="star-3_{{ review.pk }}" type="radio"
-                                                   name="ratingnew_{{ review.pk }}"
-                                                   value="5"
-                                                   checked
-                                                   disabled>
-                                            <label for="star-3_{{ review.pk }}" title="5 stars">
-                                                <i class="active fa fa-star" aria-hidden="true"></i>
-                                            </label>
-                                            <input id="star-2_{{ review.pk }}" type="radio"
-                                                   name="ratingnew_{{ review.pk }}"
-                                                   value="5"
-                                                   checked
-                                                   disabled>
-                                            <label for="star-2_{{ review.pk }}" title="5 stars">
-                                                <i class="active fa fa-star" aria-hidden="true"></i>
-                                            </label>
-                                            <input id="star-1_{{ review.pk }}" type="radio"
-                                                   name="ratingnew_{{ review.pk }}"
-                                                   value="5"
-                                                   checked
-                                                   disabled>
-                                            <label for="star-1_{{ review.pk }}" title="5 stars">
-                                                <i class="active fa fa-star" aria-hidden="true"></i>
-                                            </label>
-                                            <script>
-                                                console.log($('input[name="ratingnew_{{ review.pk }}"]:radio'));
-                                                $($('input[name="ratingnew_{{ review.pk }}"]:radio')[5 -{{ review.rating }}])
-                                                    .prop("checked", true);
-                                            </script>
+    <div class="hero-area">
+        <div class="single-hero-slide bg-img background-overlay" id="slide2" style="height: 300px;">
+            <div class="hero-content-pages">Shopping</div>
+        </div>
+    </div>
+
+    <div class="main-content-wrapper section-padding-50">
+        <div class="container">
+            <div class="row justify-content-center">
+                <!-- ============= Post Content Area Start ============= -->
+                <div class="col-12 col-lg-9">
+                    <div class="post-content-area mb-50">
+                        <!-- Catagory Area -->
+                        <div class="world-catagory-area">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="title">Shopping</li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="tab1" data-toggle="tab" href="#world-tab-1" role="tab" aria-controls="world-tab-1" aria-selected="true"></a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab2" href="{% url 'cart:order_summary' %}" role="tab">View Your Cart <img src="https://img.icons8.com/ios/20/000000/shopping-cart.png"></a>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active" id="world-tab-1" role="tabpanel" aria-labelledby="tab1">
+                                    <div class = "row">
+                                        <div style="display:inline-block;float:left;width:40%">
+                                            {% if prod.prod_pic %}
+                                                <img src="{{ prod.prod_pic.url }}" width="300" height="300">
+                                            {% endif %}
                                         </div>
-                                        <footer class="blockquote-footer">by <cite>{{ review.customer }}</cite></footer>
-                                        <br>
-                                    {% endfor %}
-                                </a>
+                                        <div style="display: inline-block; width:60%;padding:8%;">
+                                            <h4 class="title">{{ prod.prod_name }}</h4><br>
+                                            <div style="font-size: 18px;">
+                                                <h6>{{ prod.description }}</h6>
+                                                Category :<b>{{ prod.category.cat_name }}</b><br>
+                                                Our Price : <b>{{ prod.cost }}</b><br>
+                                                {% if prod.brand|length > 0 %}
+                                                    Brand: <b>{{ prod.brand }}</b><br>
+                                                {% endif %}
+                                                <br>
+
+                                                {% if prod.stock > 15 %}
+                                                    <span style="color: green;size:23px"> In stock.</span>
+                                                {% else %}
+                                                    <span style="color: green;size:23px">Only <b>{{ prod.stock }}</b> items left in stock. Hurry!!</span>
+                                                {% endif %}<br>
+                                                <a href="{% url 'cart:add_to_cart' prod.id %}">
+                                                    <button class="btn world-btn">Add to Cart</button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div>
+                                            <h5>Top Reviews:</h5>
+                                            <div style="padding: 20px; width:200%">
+                                                <div name="review">
+                                                    {% for review in prod.review_set.all %}
+                                                        <p>{{ review.content }}</p>
+                                                        <footer class="blockquote-footer">by <cite>{{ review.customer }}</cite></footer>
+                                                        <br>
+                                                    {% endfor %}
+                                                </div>
+
+                                                <h6>Write your review</h6>
+                                                <form method="POST" class="post-form" style="padding: 10px;">
+                                                    {% csrf_token %}
+                                                    {{ form.as_p }}
+                                                    <button class="btn world-btn" type="submit">Add Review</button>
+
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- ========== Sidebar Area ========== -->
+                <div class="col-12 col-md-8 col-lg-3">
+                    <div class="post-sidebar-area mb-100">
+                        <!-- Widget Area -->
+                        <div class="sidebar-widget-area">
+                            <h5 class="title">Categories</h5>
+                            <div class="widget-content">
+                                {% for cat in categories %}
+                                    <li><a href={% url 'shopping:items' cat.id %}>{{ cat.cat_name }}</a></li>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
+
 {% endblock %}

@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user_auth',
     'sports',
-    'mathfilters',
     'bootstrapform',
     'widget_tweaks',
     'shopping',
@@ -66,7 +65,6 @@ EMAIL_HOST_USER = 'genericproject11@gmail.com'
 EMAIL_HOST_PASSWORD = 'iambatman@Jitesh'
 EMAIL_USE_TLS = True
 
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -93,7 +91,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'sportshub',
         'USER': 'root',
-        'PASSWORD': 'mysqlroot',
+        'PASSWORD': 'snowysatish1248',
         'HOST': 'localhost',
         'PORT': '',
     }
