@@ -9,7 +9,7 @@ from sports.models import Tournaments, CoachingCenters, TournamentJoin
 from news.models import LastNewsUpdate, HeadLine
 from sports.forms import FavoriteSports, TournamentRegistration, CoachingCenterRegistration, TournamentJoinForm
 from django.urls import reverse
-from news.views import scrape, scrape_all_sports
+from news.views import scrape_all_sports
 from datetime import datetime
 import time
 
@@ -24,15 +24,12 @@ def homepage(request):
     now = datetime.now()
     last_update = LastNewsUpdate.objects.all()
     if len(last_update) == 0:
-        print("oops")
-        scrape()
         scrape_all_sports()
         LastNewsUpdate.objects.create(last_update=datetime.now())
     else:
         d1_ts = time.mktime(last_update[0].last_update.timetuple())
         d2_ts = time.mktime(now.timetuple())
         if (int(d2_ts - d1_ts) / 60) > 30:
-            scrape()
             scrape_all_sports()
             LastNewsUpdate.objects.all().delete()
             LastNewsUpdate.objects.create(last_update=datetime.now())
