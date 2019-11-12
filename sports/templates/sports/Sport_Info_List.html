@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>sports_list</title>
+</head>
+<body>
+<ol>
+{% for sport in sportss %}
+    <li>
+    <a class="nav-link" href="{% url 'sports:sport-detail' sport.id %}" > {{ sport.name }}</a>
+    </li>
+    {% endfor %}
+</ol>
+
+
+</body>
+</html>
