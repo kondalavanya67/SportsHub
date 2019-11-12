@@ -17,6 +17,8 @@ from rest_framework.decorators import api_view
 from django.http import JsonResponse
 from rest_framework.parsers import JSONParser
 from sports.serializers import TournamentSerializer, JoinTournamentSerializer
+from django.views.generic import ListView,DetailView
+from .models import Sport_Info
 
 
 def homepage(request):
@@ -47,6 +49,19 @@ def homepage(request):
 
 def sports_store(request):
     return render(request, "sports/maps.html", {})
+
+def Sports_List(request):
+    context={'sportss':Sport_Info.objects.all()}
+    return render(request, "sports/Sport_Info_List.html", context)
+
+class Sport_InfoListView(ListView):
+    model=Sport_Info
+    template_name = 'sports/Sport_Info_List.html'
+    context_object_name = 'sportss'
+class Sport_InfoDetailView(DetailView):
+    model = Sport_Info
+    template_name = 'sports/Sport_Info_Detail.html'
+
 
 
 def tournament_list(request):

@@ -1,5 +1,7 @@
 from django.urls import path
 from sports import views
+from .views import Sport_InfoListView,Sport_InfoDetailView
+
 
 app_name = 'sports'
 
@@ -15,5 +17,7 @@ urlpatterns = [
     path('sports_store/', views.sports_store, name='sports_store'),
     path('tournaments/', views.tournamentsList),
     path('tournaments_join/', views.tournamentsJoin, name='tournaments_join'),
+    path('sports_list/',Sport_InfoListView.as_view(),name='sports-list'),
+    path('sport/<int:pk>/',views.Sport_InfoDetailView.as_view(),name='sport-detail'),
 
 ]

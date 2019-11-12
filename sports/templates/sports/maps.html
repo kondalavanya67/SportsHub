@@ -66,33 +66,64 @@
               }
             }
 
-            function createMarkers(places) {
+                       function createMarkers(places) {
               var bounds = new google.maps.LatLngBounds();
               var placesList = document.getElementById('places');
 
-              for (var i = 0, place; place = places[i]; i++) {
+              for (var i = 0;i<places.length; i++) {
+                //var place=places[i]
                 var image = {
-                  url: place.icon,
-                  size: new google.maps.Size(71, 71),
+                  url: places[i].icon,
+                  size: new google.maps.Size(45, 45),
                   origin: new google.maps.Point(0, 0),
                   anchor: new google.maps.Point(17, 34),
                   scaledSize: new google.maps.Size(25, 25)
                 };
 
-                var marker = new google.maps.Marker({
+                console.log(places[i])
+
+
+
+
+
+
+              }
+
+                for (var i = 0;i<places.length; i++) {
+                  var place=places[i]
+                  var marker = new google.maps.Marker({
                   map: map,
                   icon: image,
-                  title: place.name,
+                  title: places[i].name,
                   animation: google.maps.Animation.DROP,
-                  position: place.geometry.location
+                  position: places[i].geometry.location
                 });
 
-                bounds.extend(place.geometry.location);
+
+                   var infowindow = new google.maps.InfoWindow()
+
+
+
+                 google.maps.event.addListener(marker,'click', (function(place,marker,content,infowindow){
+                          return function() {
+                         infowindow.setContent('<div><strong>'+place.name+'<br>' + place.vicinity+ '</strong><br>');
+                         infowindow.open(map,marker);
+                      };
+                  })
+                 (place,marker,place.vicinity+place.name,infowindow));
+                 // marker.addListener('click', function() {
+                 //    infowindow.setContent(contentString);
+                 //     infowindow.open(map, marker.position);
+                 // });AIzaSyCfdKE1VbMIvt1v_eexPCIPgH88MK7AJLU   //AIzaSyCYYtq_ARXrOqlldi8_nzWUygIjx3Zg7mo                        //AIzaSyBBDDHXhrCzm5a2cemyN2QtIb8B11hvHQE//
+
+
+                bounds.extend(places[i].geometry.location);
               }
               map.fitBounds(bounds);
             }
-
 </script>
+
+
 
 <div id="map" style="height: 500px;
   margin: 10px auto;
