@@ -2,7 +2,6 @@ from django.urls import path
 from sports import views
 from .views import Sport_InfoListView,Sport_InfoDetailView
 
-
 app_name = 'sports'
 
 urlpatterns = [
