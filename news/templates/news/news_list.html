@@ -5,28 +5,26 @@
 
     <!-- ********** Hero Area Start ********** -->
     <div class="hero-area">
-
-        <!-- Hero Slides Area -->
-        <div class="hero-slides owl-carousel">
-            <!-- Single Slide -->
-            <div class="single-hero-slide bg-img background-overlay" id="slide1"><div class="hero-content">SportsHub<div class="hero-meta-data"></div></div></div>
-            <!-- Single Slide -->
-            <div class="single-hero-slide bg-img background-overlay" id="slide2"><div class="hero-content">SportsHub</div></div>
+        <div class="single-hero-slide bg-img background-overlay" id="slide2" style="height: 300px;">
+            <div class="hero-content-pages">Sports News</div>
         </div>
     </div>
     <!-- ********** Hero Area End ********** -->
-
-    {% if slider_1 %}
-    <div class="main-content-wrapper section-padding-50">
-        <div class="container">
+    {% if context %}
+        {% for sport in context %}
+            <a href="#{{ sport }}">{{ sport }}</a>&nbsp;
+        {% endfor %}
+    <div class="main-content-wrapper">
+        {% for sport, news in context.items %}
+        <div id={{ sport }} class="container">
             <div class="row justify-content-center">
                 <!-- ============= Post Content Area Start ============= -->
                 <div class="col-12 col-lg-12">
                     <div class="post-content-area mb-50">
                         <!-- Catagory Area -->
-                        <div class="world-catagory-area">
+                        <div  class="world-catagory-area"><br><br><br>
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                <li class="title">Trending News</li>
+                                <li class="title">{{ sport.capitalize }}</li>
                             </ul>
 
                             <div class="tab-content" id="myTabContent">
@@ -37,7 +35,7 @@
                                             <div class="world-catagory-slider owl-carousel wow fadeInUpBig" data-wow-delay="0.1s">
 
                                                 <!-- Single Blog Post -->
-                                                {% for item in slider_1 %}
+                                                {% for item in news.slider_1 %}
                                                 <div class="single-blog-post" style="min-height: 477px">
                                                     <!-- Post Thumbnail -->
                                                     <div class="post-thumbnail">
@@ -60,7 +58,7 @@
                                         </div>
 
                                         <div class="col-12 col-md-4">
-                                            {% for item in blog_1 %}
+                                            {% for item in news.blog_1 %}
                                             <!-- Single Blog Post -->
                                             <div class="single-blog-post post-style-2 d-flex align-items-center wow fadeInUpBig" data-wow-delay="0.2s">
                                                 <!-- Post Thumbnail -->
@@ -82,37 +80,9 @@
                                         </div>
 
                                         <div class="col-12 col-md-4">
-                                            <div class="world-catagory-slider owl-carousel wow fadeInUpBig" data-wow-delay="0.3s">
-
                                                 <!-- Single Blog Post -->
-                                                {% for item in slider_2 %}
-                                                <div class="single-blog-post" style="min-height: 477px">
-                                                    <!-- Post Thumbnail -->
-                                                    <div class="post-thumbnail">
-                                                        <img src={{ item.image_url }} alt="">
-                                                    </div>
-                                                    <!-- Post Content -->
-                                                    <div class="post-content">
-                                                        <a href={{ item.url }} class="headline">
-                                                            <h5 class="text-wrap-headline">{{ item.title }}</h5>
-                                                        </a>
-                                                        <div class="post-meta">
-                                                            <p><a href={{ item.url }} class="post-author">{{ item.site }}</a> . {{ item.time }}</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                {% endfor %}
-
-                                            </div>
-                                        </div>
-                                    </div><br><br>
-
-
-                                    <div class="row">
-                                        {% for item in blog_2 %}
-                                        <div class="col-12 col-md-3">
-                                            <!-- Single Blog Post -->
-                                            <div class="single-blog-post wow fadeInUpBig"  data-wow-delay="0.5s">
+                                                {% for item in news.slider_2 %}
+                                               <div class="single-blog-post post-style-2 d-flex align-items-center wow fadeInUpBig" data-wow-delay="0.2s">
                                                 <!-- Post Thumbnail -->
                                                 <div class="post-thumbnail">
                                                     <img src={{ item.image_url }} alt="">
@@ -120,23 +90,22 @@
                                                 <!-- Post Content -->
                                                 <div class="post-content">
                                                     <a href={{ item.url }} class="headline">
-                                                        <h5 class="text-wrap-headline">{{ item.title }}</h5>
+                                                        <h5 class="text-wrap-headline"> {{ item.title }}</h5>
                                                     </a>
+                                                    <!-- Post Meta -->
                                                     <div class="post-meta">
                                                         <p><a href={{ item.url }} class="post-author">{{ item.site }}</a> . {{ item.time }}</p>
                                                     </div>
                                                 </div>
                                             </div>
-
+                                                {% endfor %}
                                         </div>
-                                        {% endfor %}
-
-
+                                    <br><br>
 
                                         <div class="col-12 mt-15">
                                             <div class="world-catagory-slider2 owl-carousel wow fadeInUpBig " data-wow-delay="0.5s">
                                                 <!-- ========= Single Catagory Slide ========= -->
-                                                {% for list_item in slider_3 %}
+                                                {% for list_item in news.slider_3 %}
                                                 <div class="single-cata-slide" style="padding: 0px 5px 0px 5px">
                                                     <div class="row">
                                                         {% for item in list_item %}
@@ -175,6 +144,7 @@
                 </div>
             </div>
         </div>
+        {% endfor %}
     </div>
 {% endif %}
 {% endblock %}
