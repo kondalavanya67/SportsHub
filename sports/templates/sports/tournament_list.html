@@ -37,13 +37,13 @@
                                         <a class="nav-link" id="tab3" data-toggle="tab" href="#world-tab-3" role="tab"
                                            aria-controls="world-tab-3" aria-selected="false">Joined tournaments</a>
                                     </li>
-
-                                    <li class="nav-item">
-                                        <a class="nav-link" id="tab4" data-toggle="tab" href="#world-tab-4" role="tab"
-                                           aria-controls="world-tab-4" aria-selected="false">Create a tournament <img
-                                                src="https://img.icons8.com/material-sharp/14/000000/plus-math.png"></a>
-                                    </li>
                                 {% endif %}
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab4" data-toggle="tab" href="#world-tab-4" role="tab"
+                                       aria-controls="world-tab-4" aria-selected="false">Create a tournament <img
+                                            src="https://img.icons8.com/material-sharp/14/000000/plus-math.png"></a>
+                                </li>
+
                             </ul>
 
                             <div class="tab-content" id="myTabContent">
@@ -65,7 +65,7 @@
                                                             <div class="post-thumbnail" style="min-width:170px">
                                                                 {% if item.image %}
                                                                     <img src="{% static item.image.path %}" alt="None">
-                                                                    {% else %}
+                                                                {% else %}
                                                                     <img src="{% static "news/img/default1.png" %}">
                                                                 {% endif %}
                                                             </div>
@@ -116,9 +116,9 @@
                                                         <!-- Post Thumbnail -->
                                                         <div class="post-thumbnail" style="min-width:170px">
                                                             {% if item.image %}
-                                                                    <img src="{% static item.image.path %}" alt="None">
-                                                                    {% else %}
-                                                                    <img src="{% static "news/img/default1.png" %}">
+                                                                <img src="{% static item.image.path %}" alt="None">
+                                                            {% else %}
+                                                                <img src="{% static "news/img/default1.png" %}">
                                                             {% endif %}
                                                         </div>
 
@@ -177,9 +177,9 @@
                                                         <!-- Post Thumbnail -->
                                                         <div class="post-thumbnail" style="min-width:170px">
                                                             {% if item.image %}
-                                                                    <img src="{% static item.image.path %}" alt="None">
-                                                                    {% else %}
-                                                                    <img src="{% static "news/img/default1.png" %}">
+                                                                <img src="{% static item.image.path %}" alt="None">
+                                                            {% else %}
+                                                                <img src="{% static "news/img/default1.png" %}">
                                                             {% endif %}
                                                         </div>
 
@@ -218,7 +218,8 @@
                                 <div class="tab-pane fade" id="world-tab-4" role="tabpanel" aria-labelledby="tab4">
                                     <div class="row">
                                         <div class="col-12 col-md-12">
-                                            <form class="booking-form" method="post" enctype="multipart/form-data" style="width:80%">
+                                            <form class="booking-form" method="post" enctype="multipart/form-data"
+                                                  style="width:80%">
                                                 {% csrf_token %}
                                                 <div class="hero-content"
                                                      style="padding:0px 0px 15px 0px;  font-size:35px; color: black;">

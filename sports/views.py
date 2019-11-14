@@ -9,15 +9,16 @@ from sports.models import Tournaments, CoachingCenters, TournamentJoin
 from news.models import LastNewsUpdate, HeadLine
 from sports.forms import FavoriteSports, TournamentRegistration, CoachingCenterRegistration, TournamentJoinForm
 from django.urls import reverse
-from news.views import scrape, scrape_all_sports
+from news.views import scrape_all_sports
 from datetime import datetime
 import time
 
 from rest_framework.decorators import api_view
-from django.http import HttpResponse, JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 from rest_framework.parsers import JSONParser
 from sports.serializers import TournamentSerializer, JoinTournamentSerializer
+from django.views.generic import ListView,DetailView
+from .models import Sport_Info
 
 from django.views.generic import ListView,DetailView
 from .models import Sport_Info
@@ -27,15 +28,12 @@ def homepage(request):
     now = datetime.now()
     last_update = LastNewsUpdate.objects.all()
     if len(last_update) == 0:
-        print("oops")
-        scrape()
         scrape_all_sports()
         LastNewsUpdate.objects.create(last_update=datetime.now())
     else:
         d1_ts = time.mktime(last_update[0].last_update.timetuple())
         d2_ts = time.mktime(now.timetuple())
         if (int(d2_ts - d1_ts) / 60) > 30:
-            scrape()
             scrape_all_sports()
             LastNewsUpdate.objects.all().delete()
             LastNewsUpdate.objects.create(last_update=datetime.now())
@@ -54,6 +52,19 @@ def homepage(request):
 
 def sports_store(request):
     return render(request, "sports/maps.html", {})
+
+def Sports_List(request):
+    context={'sportss':Sport_Info.objects.all()}
+    return render(request, "sports/Sport_Info_List.html", context)
+
+class Sport_InfoListView(ListView):
+    model=Sport_Info
+    template_name = 'sports/Sport_Info_List.html'
+    context_object_name = 'sportss'
+class Sport_InfoDetailView(DetailView):
+    model = Sport_Info
+    template_name = 'sports/Sport_Info_Detail.html'
+
 
 
 def Sports_List(request):
