@@ -155,7 +155,8 @@ def tournamentsJoin(request):
         print(data)
         if serializer.is_valid():
             print('User Joined')
-            t = Tournaments.objects.get(name=data['tournament'])
+            print(data['tournament'])
+            t = Tournaments.objects.get(pk=data['tournament'])
             t.no_of_joined += 1
             t.save()
             serializer.save()
