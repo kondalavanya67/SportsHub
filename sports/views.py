@@ -19,6 +19,9 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from sports.serializers import TournamentSerializer, JoinTournamentSerializer
 
+from django.views.generic import ListView,DetailView
+from .models import Sport_Info
+
 
 def homepage(request):
     now = datetime.now()
@@ -51,6 +54,20 @@ def homepage(request):
 
 def sports_store(request):
     return render(request, "sports/maps.html", {})
+
+
+def Sports_List(request):
+    context={'sportss':Sport_Info.objects.all()}
+    return render(request, "sports/sports_list.html", context)
+
+class Sport_InfoListView(ListView):
+    model=Sport_Info
+    template_name = 'sports/sports_list.html'
+    context_object_name = 'sportss'
+
+class Sport_InfoDetailView(DetailView):
+    model = Sport_Info
+    template_name = 'sports/sport_info.html'
 
 
 def tournament_list(request):
