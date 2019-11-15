@@ -142,5 +142,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
+MEDIA_URL='/media/'
+MEDIA_ROOT=os.path.join(BASE_DIR,'sportshub/media')
 PAYPAL_RECEIVER_EMAIL = 'manojmanyala@gmail.com'
 PAYPAL_TEST = True

@@ -13,7 +13,7 @@ class Sport_Info(models.Model):
     scoring = models.TextField(max_length=1000, blank=True, null=True)
     winning_criteria = models.TextField(max_length=1000, blank=True, null=True)
     rules = models.TextField(max_length=10000, blank=True, null=True)
-
+    image=models.ImageField(upload_to='sport-image',blank=True)
     def __str__(self):
         return self.name
 
