@@ -1,14 +1,12 @@
 {% extends 'news/base.html' %}
 {% load static %}
 
-{% block sports_list %}
-active
-{% endblock %}
+
 {% block content %}
 
     <div class="hero-area">
         <div class="single-hero-slide bg-img background-overlay" id="slide2" style="height: 300px;">
-            <div class="hero-content-pages">Shopping</div>
+            <div class="hero-content-pages">{{ object.name }}</div>
         </div>
     </div>
     <!-- ********** Hero Area End ********** -->
@@ -61,7 +59,7 @@ active
                                 <div class="tab-pane fade" id="world-tab-2" role="tabpanel"
                                      aria-labelledby="tab2">
                                     <div class="row">
-                                        <iframe width="960" height="540" src="https://www.youtube.com/embed?listype=playlist&list=PLcWQ_pTcyABTE6ryPVljWwInjgmFcu5Ug" allowfullscreen>
+                                        <iframe width="960" height="540" src="https://www.youtube.com/embed?listype=playlist&list=PLcWQ_pTcyABS5RsLi8iY0Z0jU5RivPBgO" allowfullscreen>
 </iframe>
                                     </div>
                                 </div>
@@ -81,12 +79,12 @@ active
 
                 <!-- ========== Sidebar Area ========== -->
                 <div class="col-12 col-md-8 col-lg-3">
-                    <div class="post-sidebar-area mb-100">
+                    <div id="sidebar" class="post-sidebar-area mb-100">
                         <!-- Widget Area -->
                         <div class="sidebar-widget-area">
                             <h5 class="title">Sports</h5>
                             <div class="widget-content">
-
+Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!! Oh boy!!
                             </div>
                         </div>
                     </div>
@@ -95,22 +93,21 @@ active
         </div>
     </div>
 
+
+    <script>
+    window.onscroll = function() {myFunction()};
+
+var header = document.getElementById("sidebar");
+var sticky = header.offsetTop;
+console.log(sticky)
+
+function myFunction() {
+  if (window.pageYOffset > sticky) {
+    header.classList.add("stickysidebar");
+  } else {
+    header.classList.remove("stickysidebar");
+  }
+}
+</script>
+
 {% endblock %}
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>sports_list</title>
-</head>
-<body>
-<ol>
-    <li>{{ object.name }}</li>
-    <li>{{ object.description }}</li>
-    <li>{{ object.equipment }}</li>
-    <li>{{ object.winning_criteria }}</li>
-    <li>{{ object.rules }}</li>
-
-</ol>
-</body>
-</html>
