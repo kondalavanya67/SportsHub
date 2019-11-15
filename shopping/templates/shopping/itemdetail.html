@@ -50,12 +50,21 @@
 
                                                 {% if prod.stock > 15 %}
                                                     <span style="color: green;size:23px"> In stock.</span>
+                                                {% elif prod.stock == 0 %}
+                                                    <span style="color: red;size:23px">We are currently out of stock.</span>
                                                 {% else %}
                                                     <span style="color: green;size:23px">Only <b>{{ prod.stock }}</b> items left in stock. Hurry!!</span>
                                                 {% endif %}<br>
-                                                <a href="{% url 'cart:add_to_cart' prod.id %}">
-                                                    <button class="btn world-btn">Add to Cart</button>
-                                                </a>
+
+                                                {% if prod.stock != 0 %}
+                                                    <a href="{% url 'cart:add_to_cart' prod.id %}">
+                                                        <button class="btn world-btn">Add to Cart</button>
+                                                    </a>
+                                                 {% else %}
+                                                    <a href="{% url 'cart:add_to_cart' prod.id %}">
+                                                        <button class="btn world-btn" disabled>Add to Cart</button>
+                                                    </a>
+                                                {% endif %}
                                             </div>
                                         </div>
                                     </div>

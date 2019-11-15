@@ -17,10 +17,10 @@ from rest_framework.decorators import api_view
 from django.http import JsonResponse
 from rest_framework.parsers import JSONParser
 from sports.serializers import TournamentSerializer, JoinTournamentSerializer
-from django.views.generic import ListView,DetailView
+from django.views.generic import ListView, DetailView
 from .models import Sport_Info
 
-from django.views.generic import ListView,DetailView
+from django.views.generic import ListView, DetailView
 from .models import Sport_Info
 
 
@@ -53,20 +53,24 @@ def homepage(request):
 def sports_store(request):
     return render(request, "sports/maps.html", {})
 
+
 def Sports_List(request):
-    context={'sportss':Sport_Info.objects.all()}
+    context = {'sportss': Sport_Info.objects.all()}
     return render(request, "sports/sports_list.html", context)
 
+
 class Sport_InfoListView(ListView):
-    model=Sport_Info
+    model = Sport_Info
     template_name = 'sports/sports_list.html'
     context_object_name = 'sportss'
+
 
 class Sport_InfoDetailView(DetailView):
     model = Sport_Info
     template_name = 'sports/sport_info.html'
 
 
+@login_required
 def tournament_list(request):
     tournaments = Tournaments.objects.all()
     tournamentForm = TournamentRegistration()
@@ -110,6 +114,7 @@ def delete_tournament(request, t_id):
     return HttpResponseRedirect(reverse('sports:tournament_list'))
 
 
+@login_required
 def coaching_centers_list(request):
     coaching_centersForm = CoachingCenterRegistration()
     if request.method == 'POST':
@@ -218,3 +223,9 @@ def leave_Tournament(request, t_id):
             tournament.no_of_joined -= 1
             tournament.save()
     return HttpResponseRedirect(reverse('sports:tournament_list'))
+
+
+def participants_list(request, t_id):
+    t = Tournaments.objects.get(pk=t_id)
+    participants = TournamentJoin.objects.filter(tournament=t)
+    return render(request, 'sports/participants_list.html', {'participants': participants})
