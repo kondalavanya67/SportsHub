@@ -70,6 +70,7 @@ class Sport_InfoDetailView(DetailView):
     template_name = 'sports/sport_info.html'
 
 
+@login_required
 def tournament_list(request):
     tournaments = Tournaments.objects.all()
     tournamentForm = TournamentRegistration()
@@ -248,3 +249,9 @@ def leave_Tournament(request, t_id):
             tournament.no_of_joined -= 1
             tournament.save()
     return HttpResponseRedirect(reverse('sports:tournament_list'))
+
+
+def participants_list(request, t_id):
+    t = Tournaments.objects.get(pk=t_id)
+    participants = TournamentJoin.objects.filter(tournament=t)
+    return render(request, 'sports/participants_list.html', {'participants': participants})

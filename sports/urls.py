@@ -8,6 +8,7 @@ urlpatterns = [
     path('', views.homepage, name="homepage"),
     # path('choose_favorites/', views.choose_favorite_sports, name='choose_favorites'),
     path('tournament_list/', views.tournament_list, name='tournament_list'),
+    path('participants_list/<int:t_id>/', views.participants_list, name='participants_list'),
     path('join_tournament/<int:t_id>', views.join_Tournament, name='join_tournament'),
     path('leave_tournament/<int:t_id>', views.leave_Tournament, name='leave_tournament'),
     path('delete_tournament/<int:t_id>', views.delete_tournament, name='delete_tournament'),
