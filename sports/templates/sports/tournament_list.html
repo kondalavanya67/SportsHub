@@ -142,6 +142,9 @@
                                                                             style="font-weight: bold">{{ item.start_date }} to {{ item.end_date }}</span>
                                                                 </p>
                                                             </div>
+                                                            <a href={% url 'sports:edit_tournament' item.pk %}>
+                                                                <button class="btn world-btn">Edit</button>
+                                                                </a>
                                                             <p><span
                                                                     style="font-weight: bold">{{ item.no_of_joined }}</span>
                                                                 &nbsp; <a href="{% url 'sports:participants_list' item.id %}" >Number of people joined</a></p><br>
