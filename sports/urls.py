@@ -18,5 +18,7 @@ urlpatterns = [
     path('tournaments_join/', views.tournamentsJoin, name='tournaments_join'),
     path('sports_list/',Sport_InfoListView.as_view(),name='sports-list'),
     path('sport/<int:pk>/',views.Sport_InfoDetailView.as_view(),name='sport-detail'),
+    path('edit_tournament/<int:t_id>', views.edit_tournament, name='edit_tournament'),
+    path('edit_coaching_center/<int:c_id>', views.edit_coaching_center, name='edit_coaching_center'),
 
 ]

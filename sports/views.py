@@ -17,10 +17,10 @@ from rest_framework.decorators import api_view
 from django.http import JsonResponse
 from rest_framework.parsers import JSONParser
 from sports.serializers import TournamentSerializer, JoinTournamentSerializer
-from django.views.generic import ListView,DetailView
+from django.views.generic import ListView, DetailView
 from .models import Sport_Info
 
-from django.views.generic import ListView,DetailView
+from django.views.generic import ListView, DetailView
 from .models import Sport_Info
 
 
@@ -53,14 +53,17 @@ def homepage(request):
 def sports_store(request):
     return render(request, "sports/maps.html", {})
 
+
 def Sports_List(request):
-    context={'sportss':Sport_Info.objects.all()}
+    context = {'sportss': Sport_Info.objects.all()}
     return render(request, "sports/sports_list.html", context)
 
+
 class Sport_InfoListView(ListView):
-    model=Sport_Info
+    model = Sport_Info
     template_name = 'sports/sports_list.html'
     context_object_name = 'sportss'
+
 
 class Sport_InfoDetailView(DetailView):
     model = Sport_Info
@@ -103,11 +106,38 @@ def delete_tournament(request, t_id):
     if t_id:
         user = User.objects.get(pk=request.user.pk)
         try:
-            t = Tournaments.objects.get(pk=t_id, user=user)
-            t.delete()
+            instance = Tournaments.objects.get(pk=t_id, user=user)
+            instance.delete()
         except:
             pass
     return HttpResponseRedirect(reverse('sports:tournament_list'))
+
+
+@login_required
+def edit_tournament(request, t_id):
+    if t_id:
+        user = User.objects.get(pk=request.user.pk)
+        instance = Tournaments.objects.get(pk=t_id, user=user)
+        if request.method == 'POST':
+            form = TournamentRegistration(request.POST, request.FILES, instance=instance)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect(reverse('sports:tournament_list'))
+        form = TournamentRegistration(instance=instance)
+        return render(request, 'sports/edit.html', {'edit_form': form, 'name': 'Edit Tournament'})
+
+@login_required
+def edit_coaching_center(request, c_id):
+    if c_id:
+        user = User.objects.get(pk=request.user.pk)
+        t = CoachingCenters.objects.get(pk=c_id, user=user)
+        if request.method == 'POST':
+            form = CoachingCenterRegistration(request.POST, request.FILES, instance=t)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect(reverse('sports:coaching_centers_list'))
+        form = CoachingCenterRegistration(instance=t)
+        return render(request, 'sports/edit.html', {'edit_form': form, 'name': 'Edit Coaching center'})
 
 
 def coaching_centers_list(request):
@@ -145,8 +175,8 @@ def delete_coaching_centers(request, c_id):
     if c_id:
         user = User.objects.get(pk=request.user.pk)
         try:
-            t = CoachingCenters.objects.get(pk=c_id, user=user)
-            t.delete()
+            instance = CoachingCenters.objects.get(pk=c_id, user=user)
+            instance.delete()
         except:
             pass
     return HttpResponseRedirect(reverse('sports:coaching_centers_list'))
