@@ -7,11 +7,15 @@ from datetime import datetime
 requests.packages.urllib3.disable_warnings()
 from bs4 import BeautifulSoup
 from .models import HeadLine, LastNewsUpdate
+from sports.models import Sport_Info
 
 
 def scrape_all_sports():
     session = requests.session()
-    sports_list = ['sports', 'cricket', 'football', 'baseball', 'basketball']
+    all_sports = Sport_Info.objects.all()
+    sports_list = ['sports']
+    for sport in all_sports:
+        sports_list.append(sport.name)
     HeadLine.objects.all().delete()
     for sport in sports_list:
         url = "https://news.google.com/search?q=" + sport + "&hl=en-IN&gl=IN&ceid=IN%3Aen"
@@ -66,14 +70,18 @@ def news_list(request):
             scrape_all_sports()
             LastNewsUpdate.objects.all().delete()
             LastNewsUpdate.objects.create(last_update=datetime.now())
-    news = HeadLine.objects.filter(category='football')
-    slider_1 = news[:4]
-    slider_2 = news[4:8]
-    blog_1 = news[8:12]
-    blog_2 = news[12:16]
-    n = 4
-    slider_3 = [news[i * n:(i + 1) * n] for i in range((len(news[16:]) + n - 1) // n)]
+    all_sports = Sport_Info.objects.all()
+    sports_list = ['sports']
+    for sport in all_sports:
+        sports_list.append(sport.name)
+    context = {}
+    for sport in sports_list:
+        news = HeadLine.objects.filter(category=sport)
+        slider_1 = news[:4]
+        slider_2 = news[4:8]
+        blog_1 = news[8:12]
+        n = 4
+        slider_3 = [news[i * n:(i + 1) * n] for i in range((len(news[13:]) + n - 1) // n)]
 
-    return render(request, 'news/news_list.html',
-                  {'slider_1': slider_1, 'slider_2': slider_2, 'slider_3': slider_3, 'blog_1': blog_1,
-                   'blog_2': blog_2})
+        context[sport] = {'slider_1': slider_1, 'slider_2': slider_2, 'slider_3': slider_3, 'blog_1': blog_1}
+    return render(request, 'news/news_list.html', {'context': context})
