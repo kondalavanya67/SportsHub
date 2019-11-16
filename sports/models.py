@@ -4,16 +4,16 @@ from django.contrib.auth.models import User
 from django.forms import ValidationError
 
 
-
 class Sport_Info(models.Model):
     name = models.CharField(max_length=1000)
     description = models.TextField(max_length=1000, blank=True, null=True)
-    objective = models.TextField(max_length=1000, blank = True, null = True)
+    objective = models.TextField(max_length=1000, blank=True, null=True)
     equipment = models.TextField(max_length=2000, blank=True, null=True)
     scoring = models.TextField(max_length=1000, blank=True, null=True)
     winning_criteria = models.TextField(max_length=1000, blank=True, null=True)
     rules = models.TextField(max_length=10000, blank=True, null=True)
-    image=models.ImageField(upload_to='sport-image',blank=True)
+    image = models.ImageField(upload_to='static/sports/sport-image', blank=True)
+
     def __str__(self):
         return self.name
 

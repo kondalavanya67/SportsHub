@@ -4,7 +4,7 @@
 {% block content %}
     <div class="hero-area">
         <div class="single-hero-slide bg-img background-overlay" id="slide2" style="height: 300px;">
-            <div class="hero-content-pages">Create Coaching Center</div>
+            <div class="hero-content-pages">Create {{ name }}</div>
         </div>
     </div>
     <form class="booking-form" method="post" enctype="multipart/form-data"
@@ -12,14 +12,13 @@
         {% csrf_token %}
         <div class="hero-content"
              style="padding:0px 0px 15px 0px;  font-size:35px; color: black;">
-            Create a Coaching Center
+            Create a {{ name }}
 
         </div>
         {% if error %}
             <p style="color: red">{{ error }}</p>
         {% endif %}
-
-        {% for field in coaching_centersForm %}
+        {% for field in form %}
             <div class="group">
                 <span class="form-label">{{ field.label_tag }}</span><br><br>
                 {{ field }}
