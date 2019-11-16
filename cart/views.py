@@ -1,10 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from cart.models import OrderItem, Order, Transaction
 from shopping.models import Product
+from user_auth.forms import Contact_Form
 from user_auth.models import Profile
 from cart.extra import generate_order_id
 import datetime
@@ -30,7 +32,7 @@ def make_payment(request):
 
     # Create the instance.
     form = PayPalPaymentsForm(initial=paypal_dict)
-    context = {"form": form}
+    context = {"form": form, 'Shopping': 'active'}
     return render(request, "cart/payment.html", context)
 
 
@@ -101,7 +103,8 @@ def order_details(request, **kwargs):
     existing_order = get_user_pending_order(request)
 
     context = {
-        'order': existing_order
+        'order': existing_order,
+        'Shopping': 'active'
     }
     return render(request, 'cart/order_summary.html', context)
 
@@ -110,22 +113,38 @@ def order_details(request, **kwargs):
 def checkout(request, **kwargs):
     existing_order = get_user_pending_order(request)
     context = {
-        'ordre': existing_order
+        'ordre': existing_order,
+        'Shopping': 'active'
     }
 
     return render(request, 'cart/checkout.html', context)
 
 
+def get_user_details(request):
+    u = Profile.objects.get(user_name=request.user)
+    user_form = Contact_Form(instance=u)
+
+    if request.method == 'POST':
+        user_form = Contact_Form(request.POST, instance=u)
+        if user_form.is_valid():
+            return redirect(reverse('payment:process'))
+
+    return render(request, 'cart/get_user_details.html', {'form': user_form})
+
+
 @login_required
 def update_transaction_records(request):
-
     order_to_purchase = get_user_pending_order(request)
-
     request.session['order_id'] = order_to_purchase.pk
-    return redirect(reverse('payment:process'))
-    # print(order_to_purchase)
+    u = Profile.objects.get(user_name=request.user)
+    user_form = Contact_Form(instance=u)
+    if request.method == 'POST':
+        user_form = Contact_Form(request.POST, instance=u)
+        if user_form.is_valid():
+            user_form.save()
+            return redirect(reverse('payment:process'))
 
-
+    return render(request, 'cart/get_user_details.html', {'form': user_form})
 
 
 def qtyupdate(request):

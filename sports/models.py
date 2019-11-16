@@ -1,7 +1,6 @@
 from django.db import models
 from user_auth.models import Profile
 from django.contrib.auth.models import User
-from django.forms import ValidationError
 
 
 class Sport_Info(models.Model):
@@ -14,6 +13,7 @@ class Sport_Info(models.Model):
     rules = models.TextField(max_length=10000, blank=True, null=True)
     image = models.ImageField(upload_to='static/sports/sport-image', blank=True)
     playlist=models.CharField(max_length=100,blank=True,null=True)
+    icon = models.CharField(max_length=100,blank=True,null=True)
 
     def __str__(self):
         return self.name
