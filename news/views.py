@@ -53,8 +53,8 @@ def scrape_all_sports():
             except:
                 pass
 
-            new_healine.category = sport
-            new_healine.save()
+            # new_healine.category = sport
+            # new_healine.save()
 
 
 def news_list(request):
@@ -71,7 +71,7 @@ def news_list(request):
             LastNewsUpdate.objects.all().delete()
             LastNewsUpdate.objects.create(last_update=datetime.now())
     all_sports = Sport_Info.objects.all()
-    sports_list = ['sports']
+    sports_list = []
     for sport in all_sports:
         sports_list.append(sport.name)
     context = {}
@@ -82,6 +82,8 @@ def news_list(request):
         blog_1 = news[8:12]
         n = 4
         slider_3 = [news[i * n:(i + 1) * n] for i in range((len(news[13:]) + n - 1) // n)]
-
-        context[sport] = {'slider_1': slider_1, 'slider_2': slider_2, 'slider_3': slider_3, 'blog_1': blog_1}
+        sport_details = all_sports.get(name=sport)
+        icon = sport_details.icon
+        context[sport] = {'slider_1': slider_1, 'slider_2': slider_2, 'slider_3': slider_3, 'blog_1': blog_1,
+                          'icon': icon}
     return render(request, 'news/news_list.html', {'context': context})

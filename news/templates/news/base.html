@@ -47,6 +47,7 @@
             color: #0000ff;
         }
 
+
         a.link {
             color: white;
         }
@@ -210,13 +211,23 @@
             }
         }
 
+      .affix {
+        top: 80px;
+          -webkit-transition: all .5s ease-in-out;
+        transition: all .5s ease-in-out;
+      }
 
+        .zoom {
+            transition: transform .2s;
+            margin: 0 auto;
+            padding: 8px;
+        }
 
-  .affix {
-    top: 80px;
-      -webkit-transition: all .5s ease-in-out;
-    transition: all .5s ease-in-out;
-  }
+        .zoom:hover {
+          -ms-transform: scale(1.5); /* IE 9 */
+          -webkit-transform: scale(1.5); /* Safari 3-8 */
+          transform: scale(1.5);
+        }
 
 
     </style>

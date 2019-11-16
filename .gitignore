@@ -1,5 +1,5 @@
 *.pyc
 /.idea
 /venv
-/static/sports/Coachingcenters_Images
-/static/sports/Tournament_Images
+/static/sports/
+/static/sports/

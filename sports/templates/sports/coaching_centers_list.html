@@ -32,7 +32,7 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link" id="tab3" data-toggle="tab" href="#world-tab-3" role="tab" aria-controls="world-tab-3" aria-selected="false">Add new Coaching Center<img src="https://img.icons8.com/material-sharp/14/000000/plus-math.png"></a>
+                                    <a class="nav-link" href="{% url 'sports:create_coaching_centers' %}">Add new Coaching Center<img src="https://img.icons8.com/material-sharp/14/000000/plus-math.png"></a>
                                 </li>
                                 {% endif %}
                             </ul>
@@ -125,6 +125,9 @@
                                                         <p>Contact Details : <span style="font-weight: bold">{{ item.phone_num }}</span>
                                                         </p>
                                                     </div>
+                                                    <a href={% url 'sports:edit_coaching_center' item.pk %}>
+                                                        <button class="btn world-btn">Edit</button>
+                                                    </a>
                                                 </div>
                                             </div>
                                             </div>
