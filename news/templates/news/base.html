@@ -236,26 +236,25 @@
                     <!-- Navbar -->
                     <div class="collapse navbar-collapse" id="worldNav">
                         <ul class="navbar-nav ml-auto">
-                            <li class="nav-item">
-                                <a class="nav-link" href={% url 'sports:homepage' %}>Home<span
-                                        class="sr-only">(current)</span></a>
+                            <li class="nav-item {% if request.path == '/' %}active{% endif %}">
+                                <a class="nav-link " href={% url 'sports:homepage' %}>Home</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href={% url 'news:news_list' %}>News</a>
+                            <li class="nav-item {% if request.path == '/news/' %}active{% endif %}">
+                                <a class="nav-link " href={% url 'news:news_list' %}>News</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item {% if request.path == '/sports_list/' %}active{% endif %}">
                                 <a class="nav-link" href="{% url "sports:sports-list" %}">Sports</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item {% if request.path == '/tournament_list/' %}active{% endif %}">
                                 <a class="nav-link" href={% url 'sports:tournament_list' %}>Tournaments</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item {% if request.path == '/coaching_centers_list/' %}active{% endif %}">
                                 <a class="nav-link" href={% url 'sports:coaching_centers_list' %}>Coaching Centers</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item {% if request.path == '/sports_store/' %}active{% endif %}">
                                 <a class="nav-link" href={% url 'sports:sports_store' %}>Sports Stores</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item {% if request.path == '/shopping/home/' %}active{% endif %}">
                                 <a class="nav-link" href={% url 'shopping:home' %}>Shopping</a>
                             </li>
                             {% if not user.is_authenticated %}

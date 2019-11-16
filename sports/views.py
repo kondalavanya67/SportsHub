@@ -47,7 +47,7 @@ def homepage(request):
 
     return render(request, 'sports/homepage.html',
                   {'slider_1': slider_1, 'slider_2': slider_2, 'slider_3': slider_3, 'blog_1': blog_1,
-                   'blog_2': blog_2})
+                   'blog_2': blog_2, 'Home': 'active'})
 
 
 def sports_store(request):
@@ -62,7 +62,7 @@ def Sports_List(request):
 class Sport_InfoListView(ListView):
     model = Sport_Info
     template_name = 'sports/sports_list.html'
-    context_object_name = 'sportss'
+    context_object_name = 'sports'
 
 
 class Sport_InfoDetailView(DetailView):
