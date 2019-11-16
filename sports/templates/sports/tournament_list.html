@@ -39,9 +39,9 @@
                                     </li>
                                 {% endif %}
                                 <li class="nav-item">
-                                    <a class="nav-link" id="tab4" data-toggle="tab" href="#world-tab-4" role="tab"
-                                       aria-controls="world-tab-4" aria-selected="false">Create a tournament <img
-                                            src="https://img.icons8.com/material-sharp/14/000000/plus-math.png"></a>
+                                    <a class="nav-link" href="{% url 'sports:create_tournament' %}">Create a tournament
+                                        <img
+                                                src="https://img.icons8.com/material-sharp/14/000000/plus-math.png"></a>
                                 </li>
 
                             </ul>
@@ -144,10 +144,12 @@
                                                             </div>
                                                             <a href={% url 'sports:edit_tournament' item.pk %}>
                                                                 <button class="btn world-btn">Edit</button>
-                                                                </a>
+                                                            </a>
                                                             <p><span
                                                                     style="font-weight: bold">{{ item.no_of_joined }}</span>
-                                                                &nbsp; <a href="{% url 'sports:participants_list' item.id %}" >Number of people joined</a></p><br>
+                                                                &nbsp; <a
+                                                                        href="{% url 'sports:participants_list' item.id %}">Number
+                                                                    of people joined</a></p><br>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -231,7 +233,16 @@
                                                         <p style="color: red">{{ error }}</p>
                                                     {% endif %}
                                                 </div>
-                                                {% for field in tornamentFourm %}
+                                                {% if tornamentForm.error %}
+                                                    {% for field in tornamentForm %}
+                                                        {% for error in field.errors %}
+                                                            <p>{{ error }}</p>
+                                                        {% endfor %}
+                                                    {% endfor %}
+
+                                                {% endif %}
+
+                                                {% for field in tornamentForm %}
                                                     <div class="group">
                                                         <span class="form-label">{{ field.label_tag }}</span><br><br>
                                                         {{ field }}
