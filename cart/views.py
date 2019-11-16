@@ -30,7 +30,7 @@ def make_payment(request):
 
     # Create the instance.
     form = PayPalPaymentsForm(initial=paypal_dict)
-    context = {"form": form}
+    context = {"form": form, 'Shopping': 'active'}
     return render(request, "cart/payment.html", context)
 
 
@@ -101,7 +101,8 @@ def order_details(request, **kwargs):
     existing_order = get_user_pending_order(request)
 
     context = {
-        'order': existing_order
+        'order': existing_order,
+        'Shopping': 'active'
     }
     return render(request, 'cart/order_summary.html', context)
 
@@ -110,7 +111,8 @@ def order_details(request, **kwargs):
 def checkout(request, **kwargs):
     existing_order = get_user_pending_order(request)
     context = {
-        'ordre': existing_order
+        'ordre': existing_order,
+        'Shopping': 'active'
     }
 
     return render(request, 'cart/checkout.html', context)

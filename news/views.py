@@ -84,4 +84,4 @@ def news_list(request):
         slider_3 = [news[i * n:(i + 1) * n] for i in range((len(news[13:]) + n - 1) // n)]
 
         context[sport] = {'slider_1': slider_1, 'slider_2': slider_2, 'slider_3': slider_3, 'blog_1': blog_1}
-    return render(request, 'news/news_list.html', {'context': context})
+    return render(request, 'news/news_list.html', {'context': context, 'News': 'active'})
