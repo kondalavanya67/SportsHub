@@ -1,9 +1,12 @@
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
-
+from rest_framework.decorators import api_view
+from django.db.models import F
 from shopping.forms import writereview
 from .models import Category, Product, Review
+from .serializers import ProductSerializer, CategorySerializer
 
 
 def list_categories(request):
@@ -56,6 +59,7 @@ def itemdetailview(request, pk, ck):
                                                         'prod': prod,
                                                         'current_order_products': current_order_products, })
 
+
 @login_required
 def reviewtext(request, categ, product):
     prod = get_object_or_404(Product, pk=product)
@@ -72,3 +76,21 @@ def reviewtext(request, categ, product):
     else:
         form = writereview()
     return render(request, 'shopping/writereview.html', {'form': form})
+
+
+@api_view(['GET'])
+def productList(request):
+    if request.method == 'GET':
+        products = Product.objects.all()
+        for product in products:
+            product.stock *= 0.1
+        serializer = ProductSerializer(products, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+
+@api_view(['GET'])
+def categoriesList(request):
+    if request.method == 'GET':
+        categories = Category.objects.all()
+        serializer = CategorySerializer(categories, many=True)
+        return JsonResponse(serializer.data, safe=False)

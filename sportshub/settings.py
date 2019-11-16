@@ -99,6 +99,10 @@ DATABASES = {
 
 LOGIN_URL = 'user_auth:login'
 
+SERIALIZATION_MODULES = {
+    'json': 'wadofstuff.django.serializers.json'
+}
+
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
