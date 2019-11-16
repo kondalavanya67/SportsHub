@@ -53,8 +53,8 @@ def scrape_all_sports():
             except:
                 pass
 
-            # new_healine.category = sport
-            # new_healine.save()
+            new_healine.category = sport
+            new_healine.save()
 
 
 def news_list(request):
@@ -64,9 +64,9 @@ def news_list(request):
         scrape_all_sports()
         LastNewsUpdate.objects.create(last_update=datetime.now())
     else:
-        d1_ts = time.mktime(last_update[0].last_update.timetuple())
-        d2_ts = time.mktime(now.timetuple())
-        if (int(d2_ts - d1_ts) / 60) > 30:
+        last_updated_time = time.mktime(last_update[0].last_update.timetuple())
+        current_time = time.mktime(now.timetuple())
+        if (int(current_time - last_updated_time) / 60) > 30:
             scrape_all_sports()
             LastNewsUpdate.objects.all().delete()
             LastNewsUpdate.objects.create(last_update=datetime.now())
@@ -86,4 +86,4 @@ def news_list(request):
         icon = sport_details.icon
         context[sport] = {'slider_1': slider_1, 'slider_2': slider_2, 'slider_3': slider_3, 'blog_1': blog_1,
                           'icon': icon}
-    return render(request, 'news/news_list.html', {'context': context})
+    return render(request, 'news/news_list.html', {'context': context, 'News': 'active'})
