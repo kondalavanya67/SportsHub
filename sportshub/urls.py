@@ -26,6 +26,6 @@ urlpatterns = [
          auth_views.PasswordResetCompleteView.as_view(template_name='registration/reset_password_complete.html'),
          name='password_reset_complete'),
 
-    # path('api/', include('sports.urls'))
+    path('api/', include('sports.urls'))
 
 ]

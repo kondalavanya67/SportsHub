@@ -50,8 +50,7 @@ def homepage(request):
 
 
 def sports_store(request):
-    return render(request,"sports/maps.html",{})
-
+    return render(request, "sports/maps.html", {})
 
 
 def tournament_list(request):
@@ -111,7 +110,8 @@ def coaching_centers_list(request):
             area = form.cleaned_data['area']
             email = form.cleaned_data['mail']
             CoachingCenters.objects.create(name=name, description=des,
-                                           user=user, mail=email, phone_num=contact, pincode=pincode, state=state, street_name=street, area=area)
+                                           user=user, mail=email, phone_num=contact, pincode=pincode, state=state,
+                                           street_name=street, area=area)
     coaching_centers = CoachingCenters.objects.all()
     if request.user.is_authenticated:
         user = User.objects.get(pk=request.user.pk)
@@ -143,7 +143,6 @@ def tournamentsList(request):
         return JsonResponse(serializer.data, safe=False)
 
 
-
 @api_view(['POST'])
 def tournamentsJoin(request):
     if request.method == 'POST':
@@ -156,6 +155,9 @@ def tournamentsJoin(request):
         serializer = JoinTournamentSerializer(data=data)
         print(data)
         if serializer.is_valid():
+            tournament = Tournaments.objects.get(pk=data['tournament'])
+            tournament.no_of_joined += 1
+            tournament.save()
             print('User Joined')
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
