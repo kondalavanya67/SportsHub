@@ -46,6 +46,12 @@ class UserProfile(forms.ModelForm):
         fields = ['location']
 
 
+class Contact_Form(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['address', 'phone_number']
+
+
 class UpdateProfile(forms.ModelForm):
     class Meta:
         model = User

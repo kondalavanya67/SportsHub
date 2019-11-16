@@ -1,7 +1,6 @@
 from django.db import models
 from user_auth.models import Profile
 from django.contrib.auth.models import User
-from django.forms import ValidationError
 
 
 
