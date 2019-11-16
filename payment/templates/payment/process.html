@@ -1,6 +1,36 @@
-{% extends 'shopping/base.html' %}
+{% extends 'news/base.html' %}
+{% load static %}
 
 {% block content %}
-    <h1>Pay using PayPal</h1>
-    {{ form.render }}
+
+    <div class="hero-area">
+        <div class="single-hero-slide bg-img background-overlay" id="slide2" style="padding-bottom: 200px">
+        <div class="row" style="width:90%">
+            <div class="col-12 col-md-7" >
+                <div class="hero-content-pages" style="padding: 300px 30px 0px 250px">Proceeding to Payment..</div>
+            </div>
+
+            <div class="col-12 col-md-5">
+
+                <div class="main" style="padding-top:200px;width:85%;">
+                    <div class="container-form" style="padding: 40px;">
+                        <div class="booking-content">
+                            <div class="booking-form">
+                                <center><h3>Choose a payment method</h3></center><br><br>
+                                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                width="20" height="20"
+                viewBox="0 0 172 172"
+                style=" fill:#000000;"><g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><path d="M0,172v-172h172v172z" fill="none"></path><g fill="#3498db"><path d="M86,14.33333c-39.49552,0 -71.66667,32.17115 -71.66667,71.66667c0,39.49552 32.17115,71.66667 71.66667,71.66667c39.49552,0 71.66667,-32.17115 71.66667,-71.66667c0,-39.49552 -32.17115,-71.66667 -71.66667,-71.66667zM86,28.66667c31.74921,0 57.33333,25.58412 57.33333,57.33333c0,31.74921 -25.58412,57.33333 -57.33333,57.33333c-31.74921,0 -57.33333,-25.58412 -57.33333,-57.33333c0,-31.74921 25.58412,-57.33333 57.33333,-57.33333zM86,43c-23.74824,0 -43,19.25176 -43,43c0,23.74824 19.25176,43 43,43c23.74824,0 43,-19.25176 43,-43c0,-23.74824 -19.25176,-43 -43,-43z"></path></g></g></svg>
+                                <span style="size : 15px">Using PayPal</span>
+                                {{ form.render }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+
 {% endblock %}

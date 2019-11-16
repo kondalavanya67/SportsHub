@@ -2,21 +2,37 @@
 {% load static %}
 
 {% block content %}
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="title">Post your coaching center</li>
-    </ul>
-    <form method="post">
-        {% csrf_token %}
-        {% for field in coaching_centersForm %}
-        <div class="wrap-input100 validate-input">
-            <span class="label-input100 p-t-30">{{ field.label_tag }}</span><br>
-            {{ field }}
-            <span class="focus-input100"></span>
+    <div class="hero-area">
+        <div class="single-hero-slide bg-img background-overlay" id="slide2" style="height: 300px;">
+            <div class="hero-content-pages">Create Coaching Center</div>
         </div>
-        {% for error in field.errors %}
-          <p style="color: red">{{ error }}</p>
+    </div>
+    <form class="booking-form" method="post" enctype="multipart/form-data"
+          style="width:80%">
+        {% csrf_token %}
+        <div class="hero-content"
+             style="padding:0px 0px 15px 0px;  font-size:35px; color: black;">
+            Create a Coaching Center
+
+        </div>
+        {% if error %}
+            <p style="color: red">{{ error }}</p>
+        {% endif %}
+
+        {% for field in coaching_centersForm %}
+            <div class="group">
+                <span class="form-label">{{ field.label_tag }}</span><br><br>
+                {{ field }}
+                <span class="bar"></span>
+            </div>
+            {% for error in field.errors %}
+                <p style="font-size: 15px; color: red">{{ error }}</p>
+            {% endfor %}
         {% endfor %}
-        {% endfor %}
-        <input type="submit">
+        <br>
+        <div class="form-submit">
+            <center><input type="submit" value="Create" class="submit"
+                           id="submit" name="submit"/></center>
+        </div>
     </form>
 {% endblock %}

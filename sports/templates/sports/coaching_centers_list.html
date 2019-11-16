@@ -32,7 +32,7 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link" id="tab3" data-toggle="tab" href="#world-tab-3" role="tab" aria-controls="world-tab-3" aria-selected="false">Add new Coaching Center<img src="https://img.icons8.com/material-sharp/14/000000/plus-math.png"></a>
+                                    <a class="nav-link" href="{% url 'sports:create_coaching_centers' %}">Add new Coaching Center<img src="https://img.icons8.com/material-sharp/14/000000/plus-math.png"></a>
                                 </li>
                                 {% endif %}
                             </ul>
@@ -48,7 +48,11 @@
                                             <div class="single-blog-post post-style-2 d-flex align-items-center wow fadeInUpBig">
                                                 <!-- Post Thumbnail -->
                                                 <div class="post-thumbnail" style="min-width:170px">
-                                                    <img src="{% static "news/img/default1.png" %}">
+                                                    {% if item.image %}
+                                                        <img src="{% static item.image.path %}" alt="None">
+                                                        {% else %}
+                                                        <img src="{% static "news/img/default1.png" %}">
+                                                    {% endif %}
                                                 </div>
 
                                                 <!-- Post Content -->
@@ -90,7 +94,11 @@
                                             <div class="single-blog-post post-style-2 d-flex align-items-center wow fadeInUpBig">
                                                 <!-- Post Thumbnail -->
                                                 <div class="post-thumbnail" style="min-width:170px">
-                                                    <img src="{% static "news/img/default1.png" %}">
+                                                    {% if item.image %}
+                                                        <img src="{% static item.image.path %}" alt="None">
+                                                        {% else %}
+                                                        <img src="{% static "news/img/default1.png" %}">
+                                                    {% endif %}
                                                 </div>
 
                                                 <!-- Post Content -->
@@ -117,6 +125,9 @@
                                                         <p>Contact Details : <span style="font-weight: bold">{{ item.phone_num }}</span>
                                                         </p>
                                                     </div>
+                                                    <a href={% url 'sports:edit_coaching_center' item.pk %}>
+                                                        <button class="btn world-btn">Edit</button>
+                                                    </a>
                                                 </div>
                                             </div>
                                             </div>
@@ -132,7 +143,7 @@
                                 <div class="tab-pane fade" id="world-tab-3" role="tabpanel" aria-labelledby="tab3">
                                     <div class="row">
                                         <div class="col-12 col-md-12">
-                                        <form class="booking-form" method="post" style="width:80%">
+                                        <form class="booking-form" method="post" enctype="multipart/form-data" style="width:80%">
                                             {% csrf_token %}
                                                 <div class="hero-content" style="padding:0px 0px 20px 0px; font-size:35px; color: black;">
                                                     Create a Coaching Center

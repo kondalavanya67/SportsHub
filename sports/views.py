@@ -9,30 +9,31 @@ from sports.models import Tournaments, CoachingCenters, TournamentJoin
 from news.models import LastNewsUpdate, HeadLine
 from sports.forms import FavoriteSports, TournamentRegistration, CoachingCenterRegistration, TournamentJoinForm
 from django.urls import reverse
-from news.views import scrape, scrape_all_sports
+from news.views import scrape_all_sports
 from datetime import datetime
 import time
 
 from rest_framework.decorators import api_view
-from django.http import HttpResponse, JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 from rest_framework.parsers import JSONParser
 from sports.serializers import TournamentSerializer, JoinTournamentSerializer
+from django.views.generic import ListView, DetailView
+from .models import Sport_Info
+
+from django.views.generic import ListView, DetailView
+from .models import Sport_Info
 
 
 def homepage(request):
     now = datetime.now()
     last_update = LastNewsUpdate.objects.all()
     if len(last_update) == 0:
-        print("oops")
-        scrape()
         scrape_all_sports()
         LastNewsUpdate.objects.create(last_update=datetime.now())
     else:
         d1_ts = time.mktime(last_update[0].last_update.timetuple())
         d2_ts = time.mktime(now.timetuple())
         if (int(d2_ts - d1_ts) / 60) > 30:
-            scrape()
             scrape_all_sports()
             LastNewsUpdate.objects.all().delete()
             LastNewsUpdate.objects.create(last_update=datetime.now())
@@ -53,20 +54,24 @@ def sports_store(request):
     return render(request, "sports/maps.html", {})
 
 
+def Sports_List(request):
+    context = {'sportss': Sport_Info.objects.all()}
+    return render(request, "sports/sports_list.html", context)
+
+
+class Sport_InfoListView(ListView):
+    model = Sport_Info
+    template_name = 'sports/sports_list.html'
+    context_object_name = 'sportss'
+
+
+class Sport_InfoDetailView(DetailView):
+    model = Sport_Info
+    template_name = 'sports/sport_info.html'
+
+
 def tournament_list(request):
     tournaments = Tournaments.objects.all()
-    tournamentForm = TournamentRegistration()
-    if request.method == 'POST':
-        form = TournamentRegistration(data=request.POST)
-        if form.is_valid():
-            user = User.objects.get(pk=request.user.pk)
-            name = form.cleaned_data['name']
-            des = form.cleaned_data['description']
-            s_date = form.cleaned_data['start_date']
-            e_date = form.cleaned_data['end_date']
-            location = form.cleaned_data['location']
-            Tournaments.objects.create(name=name, description=des, start_date=s_date, end_date=e_date,
-                                       location=location, user=user)
     if request.user.is_authenticated:
         user = User.objects.get(pk=request.user.pk)
         user_tournaments = Tournaments.objects.filter(user=user)
@@ -77,10 +82,37 @@ def tournament_list(request):
         tournaments = Tournaments.objects.exclude(pk__in=joined_pk)
         join_tornamnets = Tournaments.objects.filter(pk__in=joined_pk)
         return render(request, 'sports/tournament_list.html',
-                      {'Tournaments': tournaments, 'tornamentFourm': tournamentForm,
+                      {'Tournaments': tournaments,
                        'User_Tournaments': user_tournaments, 'joined_tournaments': join_tornamnets})
     return render(request, 'sports/tournament_list.html',
-                  {'Tournaments': tournaments, 'tornamentFourm': tournamentForm})
+                  {'Tournaments': tournaments})
+
+
+@login_required
+def create_tournament(request):
+    tournamentForm = TournamentRegistration()
+    if request.method == 'POST':
+        tournamentForm = TournamentRegistration(request.POST, request.FILES)
+        if tournamentForm.is_valid():
+            user = User.objects.get(pk=request.user.pk)
+            name = tournamentForm.cleaned_data['name']
+            des = tournamentForm.cleaned_data['description']
+            s_date = tournamentForm.cleaned_data['start_date']
+            e_date = tournamentForm.cleaned_data['end_date']
+            location = tournamentForm.cleaned_data['location']
+            img = tournamentForm.cleaned_data['image']
+            if s_date < datetime.date(datetime.now()):
+                return render(request, 'sports/create.html',
+                              {'form': tournamentForm, 'name': 'Tournament', 'error': 'Enter a  valid Start date'})
+            if s_date > e_date:
+                return render(request, 'sports/create.html',
+                              {'form': tournamentForm, 'name': 'Tournament', 'error': 'End date should be greater that Start date'})
+            Tournaments.objects.create(name=name, description=des, start_date=s_date, end_date=e_date,
+                                       location=location, user=user, image=img)
+            return HttpResponseRedirect(reverse('sports:tournament_list'))
+
+    return render(request, 'sports/create.html',
+                  {'form': tournamentForm, 'name': 'Tournament'})
 
 
 @login_required
@@ -88,39 +120,80 @@ def delete_tournament(request, t_id):
     if t_id:
         user = User.objects.get(pk=request.user.pk)
         try:
-            t = Tournaments.objects.get(pk=t_id, user=user)
-            t.delete()
+            instance = Tournaments.objects.get(pk=t_id, user=user)
+            instance.delete()
         except:
             pass
     return HttpResponseRedirect(reverse('sports:tournament_list'))
 
 
+@login_required
+def edit_tournament(request, t_id):
+    if t_id:
+        user = User.objects.get(pk=request.user.pk)
+        instance = Tournaments.objects.get(pk=t_id, user=user)
+        if request.method == 'POST':
+            form = TournamentRegistration(request.POST, request.FILES, instance=instance)
+            if form.is_valid():
+                if form.cleaned_data['start_date'] < datetime.date(datetime.now()):
+                    return render(request, 'sports/edit.html', {'edit_form': form, 'name': 'Edit Tournament',
+                                                                'error': 'Enter a  valid Start date'})
+                if form.cleaned_data['start_date'] > form.cleaned_data['end_date']:
+                    return render(request, 'sports/edit.html', {'edit_form': form, 'name': 'Edit Tournament',
+                                                                'error': 'End date should be greater that Start date'})
+                form.save()
+                return HttpResponseRedirect(reverse('sports:tournament_list'))
+        form = TournamentRegistration(instance=instance)
+        return render(request, 'sports/edit.html', {'edit_form': form, 'name': 'Edit Tournament'})
+
+
+@login_required
+def edit_coaching_center(request, c_id):
+    if c_id:
+        user = User.objects.get(pk=request.user.pk)
+        t = CoachingCenters.objects.get(pk=c_id, user=user)
+        form = CoachingCenterRegistration(instance=t)
+        if request.method == 'POST':
+            form = CoachingCenterRegistration(request.POST, request.FILES, instance=t)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect(reverse('sports:coaching_centers_list'))
+        return render(request, 'sports/edit.html', {'edit_form': form, 'name': 'Edit Coaching center'})
+
+
 def coaching_centers_list(request):
-    coaching_centersForm = CoachingCenterRegistration()
-    if request.method == 'POST':
-        form = CoachingCenterRegistration(data=request.POST)
-        if form.is_valid():
-            user = User.objects.get(pk=request.user.pk)
-            name = form.cleaned_data['name']
-            des = form.cleaned_data['description']
-            street = form.cleaned_data['street_name']
-            state = form.cleaned_data['state']
-            pincode = form.cleaned_data['pincode']
-            contact = form.cleaned_data['phone_num']
-            area = form.cleaned_data['area']
-            email = form.cleaned_data['mail']
-            CoachingCenters.objects.create(name=name, description=des,
-                                           user=user, mail=email, phone_num=contact, pincode=pincode, state=state,
-                                           street_name=street, area=area)
     coaching_centers = CoachingCenters.objects.all()
     if request.user.is_authenticated:
         user = User.objects.get(pk=request.user.pk)
         user_coaching_centers = CoachingCenters.objects.filter(user=user)
         return render(request, 'sports/coaching_centers_list.html',
-                      {'user_coaching_centers': user_coaching_centers, 'coaching_centers': coaching_centers,
-                       'coaching_centersForm': coaching_centersForm})
+                      {'user_coaching_centers': user_coaching_centers, 'coaching_centers': coaching_centers})
     return render(request, 'sports/coaching_centers_list.html',
-                  {'coaching_centers': coaching_centers, 'coaching_centersForm': coaching_centersForm})
+                  {'coaching_centers': coaching_centers})
+
+
+@login_required
+def create_coaching_center(request):
+    coaching_centersForm = CoachingCenterRegistration()
+    if request.method == 'POST':
+        coaching_centersForm = CoachingCenterRegistration(request.POST, request.FILES)
+        if coaching_centersForm.is_valid():
+            user = User.objects.get(pk=request.user.pk)
+            name = coaching_centersForm.cleaned_data['name']
+            des = coaching_centersForm.cleaned_data['description']
+            street = coaching_centersForm.cleaned_data['street_name']
+            state = coaching_centersForm.cleaned_data['state']
+            pincode = coaching_centersForm.cleaned_data['pincode']
+            contact = coaching_centersForm.cleaned_data['phone_num']
+            area = coaching_centersForm.cleaned_data['area']
+            email = coaching_centersForm.cleaned_data['mail']
+            img = coaching_centersForm.cleaned_data['image']
+            CoachingCenters.objects.create(name=name, description=des,
+                                           user=user, mail=email, phone_num=contact, pincode=pincode, state=state,
+                                           street_name=street, area=area, image=img)
+            return HttpResponseRedirect(reverse('sports:coaching_centers_list'))
+    return render(request, 'sports/create.html', {'form': coaching_centersForm, 'name': 'Coaching Center'})
+
 
 
 @login_required
@@ -128,8 +201,8 @@ def delete_coaching_centers(request, c_id):
     if c_id:
         user = User.objects.get(pk=request.user.pk)
         try:
-            t = CoachingCenters.objects.get(pk=c_id, user=user)
-            t.delete()
+            instance = CoachingCenters.objects.get(pk=c_id, user=user)
+            instance.delete()
         except:
             pass
     return HttpResponseRedirect(reverse('sports:coaching_centers_list'))
@@ -159,6 +232,10 @@ def tournamentsJoin(request):
             tournament.no_of_joined += 1
             tournament.save()
             print('User Joined')
+            print(data['tournament'])
+            t = Tournaments.objects.get(pk=data['tournament'])
+            t.no_of_joined += 1
+            t.save()
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         print(serializer.errors)
@@ -166,7 +243,10 @@ def tournamentsJoin(request):
 
 
 def join_Tournament(request, t_id):
-    joinForm = TournamentJoinForm()
+
+    initial = {'name': request.user.username, 'mail': request.user.email}
+
+    joinForm = TournamentJoinForm(initial=initial)
     if t_id:
         tourna = Tournaments.objects.get(pk=t_id)
         if request.method == 'POST':
@@ -200,3 +280,9 @@ def leave_Tournament(request, t_id):
             tournament.no_of_joined -= 1
             tournament.save()
     return HttpResponseRedirect(reverse('sports:tournament_list'))
+
+
+def participants_list(request, t_id):
+    t = Tournaments.objects.get(pk=t_id)
+    participants = TournamentJoin.objects.filter(tournament=t)
+    return render(request, 'sports/participants_list.html', {'participants': participants})

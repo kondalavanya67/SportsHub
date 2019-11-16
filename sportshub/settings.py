@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user_auth',
     'sports',
-    'mathfilters',
     'bootstrapform',
     'widget_tweaks',
     'shopping',
@@ -65,7 +64,6 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'genericproject11@gmail.com'
 EMAIL_HOST_PASSWORD = 'iambatman@Jitesh'
 EMAIL_USE_TLS = True
-
 
 TEMPLATES = [
     {
@@ -99,7 +97,11 @@ DATABASES = {
     }
 }
 
-LOGIN_REDIRECT_URL = 'user_auth:login'
+LOGIN_URL = 'user_auth:login'
+
+SERIALIZATION_MODULES = {
+    'json': 'wadofstuff.django.serializers.json'
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -136,6 +138,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
+MEDIA_URL='/media/'
+# MEDIA_ROOT=os.path.join(BASE_DIR,'sportshub/media')
 PAYPAL_RECEIVER_EMAIL = 'manojmanyala@gmail.com'
 PAYPAL_TEST = True
