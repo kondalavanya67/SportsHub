@@ -1,0 +1,85 @@
+{% extends 'news/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class="hero-area">
+        <div class="single-hero-slide bg-img background-overlay" id="slide2" style="height: 300px;">
+            <div class="hero-content-pages">Shopping</div>
+        </div>
+    </div>
+    <!-- ********** Hero Area End ********** -->
+
+    <div class="main-content-wrapper section-padding-100">
+        <div class="container">
+            <div class="row justify-content-center">
+                <!-- ============= Post Content Area Start ============= -->
+                <div class="col-12 col-lg-10">
+                    <div class="post-content-area mb-50">
+                        <!-- Catagory Area -->
+                        <div class="world-catagory-area">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="title">Shopping</li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="tab1" data-toggle="tab" href="#world-tab-1"
+                                       role="tab" aria-controls="world-tab-1" aria-selected="true"></a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab2" href="{% url 'cart:order_summary' %}" role="tab">View
+                                        Your Cart <img src="https://img.icons8.com/ios/20/000000/shopping-cart.png"></a>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active" id="world-tab-1" role="tabpanel"
+                                     aria-labelledby="tab1">
+                                    <div class="row">
+                                        {% for product in products %}
+                                            <div class="col-md-3">
+                                                <div class="product-grid6">
+                                                    {% if product.prod_pic %}
+                                                        <div class="product-image6"><img
+                                                                src="{{ product.prod_pic.url }}"></div>
+                                                    {% endif %}
+                                                    <div class="product-content">
+                                                        <h3 class="title">{{ product.prod_name }}</h3>
+                                                        <div class="price">₹{{ product.cost }}
+                                                        </div>
+                                                    </div>
+                                                    <ul class="social">
+                                                        <li>
+                                                            <a href="{% url 'shopping:specificitem' product.category.pk product.id %}"
+                                                               data-tip="View Product"><i
+                                                                    class="fa fa-search"></i></a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== Sidebar Area ========== -->
+                <div class="col-12 col-md-12 col-lg-2">
+                    <div class="post-sidebar-area mb-100">
+                        <!-- Widget Area -->
+                        <div class="sidebar-widget-area">
+                            <h5 class="title">Categories</h5>
+                            <div class="widget-content">
+                                {% for cat in categories %}
+                                    <li><a href={% url 'shopping:items' cat.id %}>{{ cat.cat_name }}</a></li>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

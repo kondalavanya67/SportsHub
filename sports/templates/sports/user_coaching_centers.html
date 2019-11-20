@@ -1,0 +1,25 @@
+{% extends 'news/base.html' %}
+{% load static %}
+
+{% block content %}
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="title">Coaching Centers</li>
+    </ul>
+    {% if user.is_authenticated %}
+        <a href=#><button class="btn btn-info">Post a coaching center</button></a>
+    {% endif %}
+    <br>
+    {% if coaching_centers %}
+
+        {% for item in coaching_centers %}
+            <li>
+                Name : {{ item.name}}<br>
+                Description : {{ item.description }}<br>
+                Address : {{ item.address }}<br>
+                <a href={% url 'sports:delete_coaching_centers' item.pk %}><button>Delete</button></a>
+            </li>
+        {% endfor %}
+    {% else %}
+        <i>OOPS, No Coaching centers to show</i>
+    {% endif %}
+{% endblock %}

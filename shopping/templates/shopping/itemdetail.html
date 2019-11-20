@@ -1,0 +1,118 @@
+{% extends 'news/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class="hero-area">
+        <div class="single-hero-slide bg-img background-overlay" id="slide2" style="height: 300px;">
+            <div class="hero-content-pages">Shopping</div>
+        </div>
+    </div>
+
+    <div class="main-content-wrapper section-padding-50">
+        <div class="container">
+            <div class="row justify-content-center">
+                <!-- ============= Post Content Area Start ============= -->
+                <div class="col-12 col-lg-9">
+                    <div class="post-content-area mb-50">
+                        <!-- Catagory Area -->
+                        <div class="world-catagory-area">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="title">Shopping</li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="tab1" data-toggle="tab" href="#world-tab-1" role="tab" aria-controls="world-tab-1" aria-selected="true"></a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab2" href="{% url 'cart:order_summary' %}" role="tab">View Your Cart <img src="https://img.icons8.com/ios/20/000000/shopping-cart.png"></a>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active" id="world-tab-1" role="tabpanel" aria-labelledby="tab1">
+                                    <div class = "row">
+                                        <div style="display:inline-block;float:left;width:40%">
+                                            {% if prod.prod_pic %}
+                                                <img src="{{ prod.prod_pic.url }}" width="300" height="300">
+                                            {% endif %}
+                                        </div>
+                                        <div style="display: inline-block; width:60%;padding:8%;">
+                                            <h4 class="title">{{ prod.prod_name }}</h4><br>
+                                            <div style="font-size: 18px;">
+                                                <h6>{{ prod.description }}</h6>
+                                                Category :<b>{{ prod.category.cat_name }}</b><br>
+                                                Our Price : <b>{{ prod.cost }}</b><br>
+                                                {% if prod.brand|length > 0 %}
+                                                    Brand: <b>{{ prod.brand }}</b><br>
+                                                {% endif %}
+                                                <br>
+
+                                                {% if prod.stock > 15 %}
+                                                    <span style="color: green;size:23px"> In stock.</span>
+                                                {% elif prod.stock == 0 %}
+                                                    <span style="color: red;size:23px">We are currently out of stock.</span>
+                                                {% else %}
+                                                    <span style="color: green;size:23px">Only <b>{{ prod.stock }}</b> items left in stock. Hurry!!</span>
+                                                {% endif %}<br>
+
+                                                {% if prod.stock != 0 %}
+                                                    <a href="{% url 'cart:add_to_cart' prod.id %}">
+                                                        <button class="btn world-btn">Add to Cart</button>
+                                                    </a>
+                                                 {% else %}
+                                                    <a href="{% url 'cart:add_to_cart' prod.id %}">
+                                                        <button class="btn world-btn" disabled>Add to Cart</button>
+                                                    </a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div>
+                                            <h5>Top Reviews:</h5>
+                                            <div style="padding: 20px; width:200%">
+                                                <div name="review">
+                                                    {% for review in prod.review_set.all %}
+                                                        <p>{{ review.content }}</p>
+                                                        <footer class="blockquote-footer">by <cite>{{ review.customer }}</cite></footer>
+                                                        <br>
+                                                    {% endfor %}
+                                                </div>
+
+                                                <h6>Write your review</h6>
+                                                <form method="POST" class="post-form" style="padding: 10px;">
+                                                    {% csrf_token %}
+                                                    {{ form.as_p }}
+                                                    <button class="btn world-btn" type="submit">Add Review</button>
+
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== Sidebar Area ========== -->
+                <div class="col-12 col-md-8 col-lg-3">
+                    <div class="post-sidebar-area mb-100">
+                        <!-- Widget Area -->
+                        <div class="sidebar-widget-area">
+                            <h5 class="title">Categories</h5>
+                            <div class="widget-content">
+                                {% for cat in categories %}
+                                    <li><a href={% url 'shopping:items' cat.id %}>{{ cat.cat_name }}</a></li>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

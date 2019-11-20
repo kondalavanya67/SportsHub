@@ -1,0 +1,47 @@
+{% extends 'user_auth/base.html' %}
+{% load bootstrap %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block register %}
+<body>
+<div class="main" style="padding-top: 180px">
+    <div class="container" >
+        <div class="booking-content">
+            <div class="booking-form">
+                <form class="booking-form" method="post">
+                    {% csrf_token %}
+                    <h2>Update Profile</h2>
+            {% for field in user_form %}
+            <div class="form-group form-input">
+                <span class="form-label">{{ field.label_tag }}</span><br>
+                {{ field }}
+            </div>
+            {% for error in field.errors %}
+              <p style="font-size: 15px; padding-bottom: 15px; color: red">{{ error }}</p>
+            {% endfor %}
+            {% endfor %}
+
+            {% if news_form %}
+                {% for field in news_form %}
+                <div class="form-group form-input">
+                    <span class="form-label">{{ field.label_tag }}</span><br>
+                    {{ field }}
+                </div>
+                    {% for error in field.errors %}
+              <p style="font-size: 15px;padding-bottom: 15px; color: red">{{ error }}</p>
+            {% endfor %}
+                {% endfor %}
+
+            {% endif %}<br>
+            <div class="form-submit">
+                <input type="submit" value="Update" class="submit" id="submit" name="submit" />
+            </div>
+        </form>
+        </div>
+        </div>
+        </div>
+</div>
+</body>
+
+{% endblock %}

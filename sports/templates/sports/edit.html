@@ -1,0 +1,37 @@
+{% extends 'news/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="hero-area">
+        <div class="single-hero-slide bg-img background-overlay" id="slide2" style="height: 300px;">
+            <div class="hero-content-pages">{{ name }}</div>
+        </div>
+    </div>
+    <form class="booking-form" method="post" enctype="multipart/form-data"
+          style="width:80%">
+        {% csrf_token %}
+        <div class="hero-content"
+             style="padding:0px 0px 15px 0px;  font-size:35px; color: black;">
+            {{ name }}
+
+        </div>
+        {% if error %}
+            <p style="color: red">{{ error }}</p>
+        {% endif %}
+        {% for field in edit_form %}
+            <div class="group">
+                <span class="form-label">{{ field.label_tag }}</span><br><br>
+                {{ field }}
+                <span class="bar"></span>
+            </div>
+            {% for error in field.errors %}
+                <p style="font-size: 15px; color: red">{{ error }}</p>
+            {% endfor %}
+        {% endfor %}
+        <br>
+        <div class="form-submit">
+            <center><input type="submit" value="Update" class="submit"
+                           id="submit" name="submit"/></center>
+        </div>
+    </form>
+{% endblock %}

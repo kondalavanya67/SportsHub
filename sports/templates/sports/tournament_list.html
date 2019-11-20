@@ -1,0 +1,272 @@
+{% extends 'news/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <!-- ********** Hero Area Start ********** -->
+    <div class="hero-area">
+        <div class="single-hero-slide bg-img background-overlay" id="slide2" style="height: 300px;">
+            <div class="hero-content-pages">Tournaments</div>
+        </div>
+    </div>
+    <!-- ********** Hero Area End ********** -->
+
+    <div class="main-content-wrapper section-padding-50">
+        <div class="container">
+            <div class="row justify-content-center">
+                <!-- ============= Post Content Area Start ============= -->
+                <div class="col-12 col-lg-12">
+                    <div class="post-content-area mb-50">
+                        <!-- Catagory Area -->
+                        <div class="world-catagory-area">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="title">Tournaments</li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="tab1" data-toggle="tab" href="#world-tab-1"
+                                       role="tab" aria-controls="world-tab-1" aria-selected="false">All</a>
+                                </li>
+
+                                {% if user.is_authenticated %}
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="tab2" data-toggle="tab" href="#world-tab-2" role="tab"
+                                           aria-controls="world-tab-2" aria-selected="false">Your tournaments</a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="tab3" data-toggle="tab" href="#world-tab-3" role="tab"
+                                           aria-controls="world-tab-3" aria-selected="false">Joined tournaments</a>
+                                    </li>
+                                {% endif %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'sports:create_tournament' %}">Create a tournament
+                                        <img
+                                                src="https://img.icons8.com/material-sharp/14/000000/plus-math.png"></a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" id="myTabContent">
+
+                                <div class="tab-pane fade show active" id="world-tab-1" role="tabpanel"
+                                     aria-labelledby="tab1">
+                                    <div class="row">
+                                        <div class="row">
+                                            {% if Tournaments %}
+                                                {% if Tournaments.errors %}
+                                                    {% for error in Tournaments.errors %}
+                                                        {{ error }}
+                                                    {% endfor %}
+                                                {% endif %}
+                                                {% for item in Tournaments %}
+                                                    <div class="col-12 col-md-6" style="padding-bottom: 10px">
+                                                        <div class="single-blog-post post-style-2 d-flex align-items-center wow fadeInUpBig">
+                                                            <!-- Post Thumbnail -->
+                                                            <div class="post-thumbnail" style="min-width:170px">
+                                                                {% if item.image %}
+                                                                    <img src="{% static item.image.path %}" alt="None">
+                                                                {% else %}
+                                                                    <img src="{% static "news/img/default1.png" %}">
+                                                                {% endif %}
+                                                            </div>
+
+                                                            <!-- Post Content -->
+                                                            <div class="post-content">
+                                                                <h5 class="text-wrap-headline"> {{ item.name }}</h5>
+                                                                <p>{{ item.description }}</p>
+                                                                <!-- Post Meta -->
+                                                                <div class="text-wrap-headline">
+                                                                    <p>Location : <span
+                                                                            style="font-weight: bold">{{ item.location }}</span><br>
+                                                                        Time: <span
+                                                                                style="font-weight: bold">{{ item.start_date }} to {{ item.end_date }}</span>
+                                                                    </p>
+                                                                </div>
+                                                                {% if user.is_authenticated %}
+                                                                    <a href={% url 'sports:join_tournament' item.pk %}>
+                                                                        <button class="btn world-btn">Join</button>
+                                                                    </a>
+                                                                {% endif %}
+                                                                <p><span
+                                                                        style="font-weight: bold">{{ item.no_of_joined }}</span>&nbsp;people
+                                                                    joined</p><br>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            {% else %}
+                                                <i>Oops!!, No Tournaments to show.</i>
+                                            {% endif %}
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="world-tab-2" role="tabpanel" aria-labelledby="tab2">
+                                    <div class="hero-content"
+                                         style="padding:0px 0px 20px 0px;  font-size:35px; color: black;">
+                                        Your Tournaments
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        {% if User_Tournaments %}
+                                            {% for item in User_Tournaments %}
+                                                <div class="col-12 col-md-6" style="padding-bottom: 10px">
+                                                    <div class="single-blog-post post-style-2 d-flex align-items-center wow fadeInUpBig">
+                                                        <!-- Post Thumbnail -->
+                                                        <div class="post-thumbnail" style="min-width:170px">
+                                                            {% if item.image %}
+                                                                <img src="{% static item.image.path %}" alt="None">
+                                                            {% else %}
+                                                                <img src="{% static "news/img/default1.png" %}">
+                                                            {% endif %}
+                                                        </div>
+
+                                                        <!-- Post Content -->
+                                                        <div class="post-content">
+
+
+                                                            <a href={% url 'sports:delete_tournament' item.pk %}>
+                                                                <span style="float: right"><img
+                                                                        src="https://img.icons8.com/ios/20/000000/cancel.png"></span>
+                                                            </a>
+
+
+                                                            <h5 class="text-wrap-headline"> {{ item.name }}</h5>
+                                                            <p>{{ item.description }}</p>
+                                                            <!-- Post Meta -->
+                                                            <div class="text-wrap-headline">
+                                                                <p>Location : <span
+                                                                        style="font-weight: bold">{{ item.location }}</span><br>
+                                                                    Time: <span
+                                                                            style="font-weight: bold">{{ item.start_date }} to {{ item.end_date }}</span>
+                                                                </p>
+                                                            </div>
+                                                            <a href={% url 'sports:edit_tournament' item.pk %}>
+                                                                <button class="btn world-btn">Edit</button>
+                                                            </a>
+                                                            <p><span
+                                                                    style="font-weight: bold">{{ item.no_of_joined }}</span>
+                                                                &nbsp; <a
+                                                                        href="{% url 'sports:participants_list' item.id %}">Number
+                                                                    of people joined</a></p><br>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            {% endfor %}
+                                        {% else %}
+                                            <i>Oops!!, No Tournaments to show.</i>
+                                        {% endif %}
+
+                                    </div>
+                                </div>
+
+
+                                <div class="tab-pane fade" id="world-tab-3" role="tabpanel" aria-labelledby="tab3">
+                                    <div class="hero-content"
+                                         style="padding:0px 0px 20px 0px;  font-size:35px; color: black;">
+                                        Joined Tournaments
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        {% if joined_tournaments %}
+                                            {% if joined_tournaments.errors %}
+                                                {% for error in joined_tournaments.errors %}
+                                                    {{ error }}
+                                                {% endfor %}
+                                            {% endif %}
+                                            {% for item in joined_tournaments %}
+                                                <div class="col-12 col-md-6" style="padding-bottom: 10px">
+                                                    <div class="single-blog-post post-style-2 d-flex align-items-center wow fadeInUpBig">
+                                                        <!-- Post Thumbnail -->
+                                                        <div class="post-thumbnail" style="min-width:170px">
+                                                            {% if item.image %}
+                                                                <img src="{% static item.image.path %}" alt="None">
+                                                            {% else %}
+                                                                <img src="{% static "news/img/default1.png" %}">
+                                                            {% endif %}
+                                                        </div>
+
+                                                        <!-- Post Content -->
+                                                        <div class="post-content">
+
+                                                            <h5 class="text-wrap-headline"> {{ item.name }}</h5>
+                                                            <p>{{ item.description }}</p>
+                                                            <!-- Post Meta -->
+                                                            <div class="text-wrap-headline">
+                                                                <p>Location : <span
+                                                                        style="font-weight: bold">{{ item.location }}</span><br>
+                                                                    Time: <span
+                                                                            style="font-weight: bold">{{ item.start_date }} to {{ item.end_date }}</span>
+                                                                </p>
+                                                            </div>
+                                                            <a href={% url 'sports:leave_tournament' item.pk %}>
+                                                                <button class="btn btn-primary">Leave</button>
+                                                            </a>
+                                                            <p><span
+                                                                    style="font-weight: bold">{{ item.no_of_joined }}</span>
+                                                                &nbsp; Number of people joined</p><br>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            {% endfor %}
+                                        {% else %}
+                                            <i>Oops!!, No Tournaments to show.</i>
+                                        {% endif %}
+
+                                    </div>
+                                </div>
+
+
+                                <div class="tab-pane fade" id="world-tab-4" role="tabpanel" aria-labelledby="tab4">
+                                    <div class="row">
+                                        <div class="col-12 col-md-12">
+                                            <form class="booking-form" method="post" enctype="multipart/form-data"
+                                                  style="width:80%">
+                                                {% csrf_token %}
+                                                <div class="hero-content"
+                                                     style="padding:0px 0px 15px 0px;  font-size:35px; color: black;">
+                                                    Create a Tournament
+                                                    {% if error %}
+                                                        <p style="color: red">{{ error }}</p>
+                                                    {% endif %}
+                                                </div>
+                                                {% if tornamentForm.error %}
+                                                    {% for field in tornamentForm %}
+                                                        {% for error in field.errors %}
+                                                            <p>{{ error }}</p>
+                                                        {% endfor %}
+                                                    {% endfor %}
+
+                                                {% endif %}
+
+                                                {% for field in tornamentForm %}
+                                                    <div class="group">
+                                                        <span class="form-label">{{ field.label_tag }}</span><br><br>
+                                                        {{ field }}
+                                                        <span class="bar"></span>
+                                                    </div>
+                                                    {% for error in field.errors %}
+                                                        <p style="font-size: 15px; color: red">{{ error }}</p>
+                                                    {% endfor %}
+                                                {% endfor %}
+                                                <br>
+                                                <div class="form-submit">
+                                                    <center><input type="submit" value="Create" class="submit"
+                                                                   id="submit" name="submit"/></center>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
